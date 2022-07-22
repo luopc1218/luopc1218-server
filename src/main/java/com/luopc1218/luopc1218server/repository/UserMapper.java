@@ -1,9 +1,6 @@
 package com.luopc1218.luopc1218server.repository;
 
-import com.luopc1218.luopc1218server.entity.user.User;
-import com.luopc1218.luopc1218server.entity.user.UserEmail;
-import com.luopc1218.luopc1218server.entity.user.UserPassword;
-import com.luopc1218.luopc1218server.entity.user.UserPhone;
+import com.luopc1218.luopc1218server.entity.user.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -27,4 +24,6 @@ public interface UserMapper {
     void addUserPhone(@Param("userPhone") UserPhone userPhone);
 
     void addUserEmail(@Param("userEmail") UserEmail userEmail);
+
+    GetUserInfoResponse getUserInfo(Integer id);
 }

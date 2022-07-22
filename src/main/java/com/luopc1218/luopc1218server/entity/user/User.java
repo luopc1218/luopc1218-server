@@ -13,6 +13,8 @@ public class User {
     private String avatarUrl;
     private Date createTime;
 
+    public User() {
+    }
 
     public User(String name, String avatarUrl) {
         this.name = name;

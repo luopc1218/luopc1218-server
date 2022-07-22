@@ -13,4 +13,5 @@ public class SignUpBody {
     private String email;
     private String phone;
     private Integer telCodeId;
+    private String phoneCheckCode;
 }

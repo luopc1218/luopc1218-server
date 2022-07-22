@@ -41,4 +41,12 @@
         INSERT INTO user_email(userId, address)
         values (#{userEmail.userId}, #{userEmail.address})
     </insert>
+    <select id="getUserInfo" resultType="com.luopc1218.luopc1218server.entity.user.GetUserInfoResponse">
+        select u.id, u.name, avatarUrl, u.createTime, ctc.tel, up.number, ue.address
+        from user u
+                 left join user_phone up on up.userId = u.id
+                 left join user_email ue on ue.userId = u.id
+                 left join country_tel_code ctc on up.telCodeId = ctc.id
+        where u.id = #{id};
+    </select>
 </mapper>

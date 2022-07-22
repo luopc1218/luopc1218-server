@@ -60,8 +60,7 @@ public class UserController {
     @RequestMapping(value = "/signUp", method = RequestMethod.POST)
     public ApiResponse signUp(@RequestBody SignUpBody signUpBody) {
         try {
-            userService.signUp(signUpBody);
-            return ApiResponse.success("注册成功");
+            return ApiResponse.success(userService.signUp(signUpBody), "注册成功");
         } catch (Exception e) {
             return ApiResponse.fail(e.getMessage());
         }
@@ -87,6 +86,16 @@ public class UserController {
             Integer userId = (Integer) request.getAttribute("CURRENT_USER_ID");
             userService.changePassword(userId, changePasswordForm);
             return ApiResponse.success("修改成功");
+        } catch (Exception e) {
+            return ApiResponse.fail(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/checkSignUpUsername", method = RequestMethod.GET)
+    public ApiResponse checkSignUpUsername(@RequestParam("username") String username) {
+        try {
+            userService.checkSignUpUsername(username);
+            return ApiResponse.success(true);
         } catch (Exception e) {
             return ApiResponse.fail(e.getMessage());
         }

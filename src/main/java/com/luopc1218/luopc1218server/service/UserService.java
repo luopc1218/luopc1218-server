@@ -15,12 +15,12 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
-    public User getUserInfo(Integer id) throws RuntimeException {
-        User user = userMapper.getUserById(id);
-        if (user == null) {
+    public GetUserInfoResponse getUserInfo(Integer id) throws RuntimeException {
+        GetUserInfoResponse getUserInfoResponse = userMapper.getUserInfo(id);
+        if (getUserInfoResponse == null) {
             throw new RuntimeException("用户不存在");
         }
-        return user;
+        return getUserInfoResponse;
     }
 
     public String signIn(SignInBody signInBody) throws RuntimeException {
@@ -38,7 +38,7 @@ public class UserService {
         }
     }
 
-    public void signUp(SignUpBody signUpBody) throws RuntimeException {
+    public User signUp(SignUpBody signUpBody) throws RuntimeException {
         String name = signUpBody.getUsername();
         if (userMapper.getUserByName(name) != null) {
             throw new RuntimeException("用户已存在");
@@ -57,6 +57,7 @@ public class UserService {
 //        绑定手机号
         if (!Objects.equals(phone, "") && telCodeId != null) {
             UserPhone userPhone = new UserPhone(userId, telCodeId, phone);
+            String phoneCheckCode = signUpBody.getPhoneCheckCode();
             userMapper.addUserPhone(userPhone);
         }
 //        绑定邮箱
@@ -64,6 +65,7 @@ public class UserService {
             UserEmail userEmail = new UserEmail(userId, email);
             userMapper.addUserEmail(userEmail);
         }
+        return this.getUserInfo(userId);
     }
 
     public void changeAvatar(Integer id, String url) throws RuntimeException {
@@ -81,4 +83,10 @@ public class UserService {
         userMapper.changePassword(userId, encryptedNewPassword);
     }
 
+    public void checkSignUpUsername(String username) throws RuntimeException {
+        boolean alreadyExist = userMapper.getUserByName(username) != null;
+        if (alreadyExist) {
+            throw new RuntimeException("用户名已存在");
+        }
+    }
 }
