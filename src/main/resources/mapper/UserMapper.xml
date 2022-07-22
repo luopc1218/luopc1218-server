@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.luopc1218.luopc1218server.repository.UserMapper">
+    <insert id="addUser" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into user(name, avatarUrl) value (#{user.name}, #{user.avatarUrl});
+    </insert>
+    <insert id="addUserPassword" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into user_password(userId, password) value (#{userPassword.userId}, #{userPassword.password});
+    </insert>
+    <update id="changeAvatar">
+        update user
+        set avatarUrl=#{avatarUrl}
+        where id = #{userId};
+    </update>
+    <update id="changePassword">
+        update user_password
+        set password=#{newPassword}
+        where userId = #{userId}
+    </update>
+    <select id="getUserById" resultType="com.luopc1218.luopc1218server.entity.user.User">
+        select id, name, avatarUrl, createTime
+        from user
+        where id = #{id};
+    </select>
+    <select id="getUserByName" resultType="com.luopc1218.luopc1218server.entity.user.User">
+        select id, name, avatarUrl, createTime
+        from user
+        where name = #{name};
+    </select>
+    <select id="getUserPassword" resultType="java.lang.String">
+        select password
+        from user_password
+        where userId = #{userId};
+    </select>
+    <insert id="addUserPhone" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO user_phone(userId, telCodeId, number)
+        values (#{userPhone.userId}, #{userPhone.telCodeId}, #{userPhone.number})
+    </insert>
+    <insert id="addUserEmail" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO user_email(userId, address)
+        values (#{userEmail.userId}, #{userEmail.address})
+    </insert>
+</mapper>
