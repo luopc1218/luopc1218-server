@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.luopc1218.luopc1218server.repository.ArticleMapper">
+    <select id="getArticleTagList" resultType="com.luopc1218.luopc1218server.entity.article.ArticleTag">
+        select id, name, createTime
+        from article_tag
+        where name like '${query}%';
+    </select>
+    <insert id="addArticle" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into article(title, description, content, authorId)
+        values (#{addArticleBody.title}, #{addArticleBody.description}, #{addArticleBody.content},
+                #{addArticleBody.userId})
+    </insert>
+    <select id="getArticleInfoById" resultType="com.luopc1218.luopc1218server.entity.article.Article">
+        select id,
+               title,
+               description,
+               content,
+               authorId,
+               createTime,
+               updateTime,
+               deleteTime
+        from article
+        where id = #{articleId}
+    </select>
+    <insert id="addArticleTags" useGeneratedKeys="true" keyProperty="id">
+        insert into article_tag(name) values
+        <foreach item="item" collection="list" separator=",">
+            (#{item.name})
+        </foreach>
+    </insert>
+
+    <insert id="addArticleTagLink" useGeneratedKeys="true" keyProperty="id">
+
+    </insert>
+</mapper>
