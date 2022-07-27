@@ -17,5 +17,7 @@ public interface ArticleMapper {
 
     void addArticleTags(List<AddArticleTagBody> newTagList);
 
-    void addArticleTagLink(AddArticleTagLinkBody addArticleTagLinkBody);
+    void addArticleTagLink(List<AddArticleTagLinkBody> addArticleTagLinkBodyList);
+
+    List<GetArticleListResponse> getArticleList(@Param("getArticleListParams") GetArticleListParams getArticleListParams);
 }

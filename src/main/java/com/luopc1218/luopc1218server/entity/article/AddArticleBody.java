@@ -14,10 +14,12 @@ public class AddArticleBody {
     private List<String> newTags;
     private String content;
 
-    public AddArticleBody(String title, String description, List<Integer> tags, String content) {
+    public AddArticleBody(Integer userId, String title, String description, List<Integer> tags, List<String> newTags, String content) {
+        this.userId = userId;
         this.title = title;
         this.description = description;
         this.tags = tags;
+        this.newTags = newTags;
         this.content = content;
     }
 }

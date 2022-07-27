@@ -2,15 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.luopc1218.luopc1218server.repository.ArticleMapper">
-    <select id="getArticleTagList" resultType="com.luopc1218.luopc1218server.entity.article.ArticleTag">
-        select id, name, createTime
-        from article_tag
-        where name like '${query}%';
-    </select>
+
+    <resultMap id="getArticleInfoResponse" type="com.luopc1218.luopc1218server.entity.article.GetArticleListResponse">
+        <result column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="description" property="description"/>
+        <result column="content" property="content"/>
+        <result column="authorId" property="authorId"/>
+        <result column="authorName" property="authorName"/>
+        <result column="authorAvatarUrl" property="authorAvatarUrl"/>
+        <result column="createTime" property="createTime"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="deleteTime" property="deleteTime"/>
+        <collection property="tags" javaType="java.util.ArrayList"
+                    ofType="com.luopc1218.luopc1218server.entity.article.ArticleTag" column="{articleId=id}"
+                    select="getArticleTagList">
+        </collection>
+    </resultMap>
+
     <insert id="addArticle" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
         insert into article(title, description, content, authorId)
         values (#{addArticleBody.title}, #{addArticleBody.description}, #{addArticleBody.content},
-                #{addArticleBody.userId})
+                #{addArticleBody.userId});
     </insert>
     <select id="getArticleInfoById" resultType="com.luopc1218.luopc1218server.entity.article.Article">
         select id,
@@ -32,6 +45,32 @@
     </insert>
 
     <insert id="addArticleTagLink" useGeneratedKeys="true" keyProperty="id">
-
+        insert into article_tag_link(articleId, tagId) values
+        <foreach item="item" collection="list" separator=",">
+            (#{item.articleId},#{item.tagId})
+        </foreach>
     </insert>
+
+    <select id="getArticleList" resultMap="getArticleInfoResponse">
+        select a.id,
+               title,
+               description,
+               content,
+               authorId,
+               u.name as authorName,
+               u.avatarUrl as authorAvatarUrl,
+               a.createTime,
+               updateTime,
+               deleteTime
+        from article a
+                 left join user u on a.authorId = u.id
+        where deleteTime is null;
+    </select>
+    <select id="getArticleTagList" resultType="com.luopc1218.luopc1218server.entity.article.ArticleTag">
+        SELECT at.id, at.name, at.createTime
+        from article_tag_link atl
+                 left join article_tag at on atl.tagId = at.id
+        where atl.articleId = #{articleId}
+          and name like '${query}%';
+    </select>
 </mapper>

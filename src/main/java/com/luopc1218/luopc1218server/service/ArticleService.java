@@ -22,8 +22,9 @@ public class ArticleService {
         articleMapper.addArticle(addArticleBody);
         Integer articleId = addArticleBody.getId();
         List<Integer> tagIdList = addArticleBody.getTags();
+        List<String> newTagNameList = addArticleBody.getNewTags();
 //        添加标签
-        if (addArticleBody.getNewTags() != null) {
+        if (newTagNameList.size() > 0) {
             List<Integer> newTagIdList = this.addArticleTags(addArticleBody.getNewTags());
             tagIdList.addAll(newTagIdList);
         }
@@ -37,8 +38,11 @@ public class ArticleService {
     }
 
     public void addArticleTagLink(Integer articleId, List<Integer> tagIdList) throws RuntimeException {
-        AddArticleTagLinkBody addArticleTagLinkBody = new AddArticleTagLinkBody(articleId, tagIdList);
-        articleMapper.addArticleTagLink(addArticleTagLinkBody);
+        List<AddArticleTagLinkBody> addArticleTagLinkBodyList = new ArrayList<>();
+        tagIdList.forEach(tagId -> addArticleTagLinkBodyList.add(new AddArticleTagLinkBody(articleId, tagId)));
+        if (addArticleTagLinkBodyList.size() > 0) {
+            articleMapper.addArticleTagLink(addArticleTagLinkBodyList);
+        }
     }
 
     public List<Integer> addArticleTags(List<String> tagNameList) throws RuntimeException {
@@ -48,5 +52,9 @@ public class ArticleService {
         List<Integer> newArticleTagIdList = new ArrayList<>();
         addArticleTagBodyList.forEach(addArticleTagBody -> newArticleTagIdList.add(addArticleTagBody.getId()));
         return newArticleTagIdList;
+    }
+
+    public List<GetArticleListResponse> getArticleList(GetArticleListParams getArticleListParams) {
+        return articleMapper.getArticleList(getArticleListParams);
     }
 }
