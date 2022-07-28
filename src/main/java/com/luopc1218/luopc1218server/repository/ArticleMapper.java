@@ -13,11 +13,12 @@ public interface ArticleMapper {
 
     void addArticle(@Param("addArticleBody") AddArticleBody addArticleBody);
 
-    Article getArticleInfoById(@Param("articleId") Integer articleId);
 
     void addArticleTags(List<AddArticleTagBody> newTagList);
 
     void addArticleTagLink(List<AddArticleTagLinkBody> addArticleTagLinkBodyList);
 
     List<GetArticleListResponse> getArticleList(@Param("getArticleListParams") GetArticleListParams getArticleListParams);
+
+    GetArticleInfoResponse getArticleInfo(@Param("getArticleInfoParams") GetArticleInfoParams getArticleInfoParams);
 }

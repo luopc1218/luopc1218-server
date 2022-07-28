@@ -25,5 +25,7 @@ public interface UserMapper {
 
     void addUserEmail(@Param("userEmail") UserEmail userEmail);
 
-    GetUserInfoResponse getUserInfo(Integer id);
+    GetUserInfoResponse getUserInfoById(Integer id);
+
+    GetUserInfoResponse getUserInfo(@Param("getUserInfoParams") GetUserInfoParams getUserInfoParams);
 }

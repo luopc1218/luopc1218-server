@@ -3,7 +3,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.luopc1218.luopc1218server.repository.ArticleMapper">
 
-    <resultMap id="getArticleInfoResponse" type="com.luopc1218.luopc1218server.entity.article.GetArticleListResponse">
+    <resultMap id="getArticleInfoResponseMap"
+               type="com.luopc1218.luopc1218server.entity.article.GetArticleInfoResponse">
         <result column="id" property="id"/>
         <result column="title" property="title"/>
         <result column="description" property="description"/>
@@ -25,18 +26,6 @@
         values (#{addArticleBody.title}, #{addArticleBody.description}, #{addArticleBody.content},
                 #{addArticleBody.userId});
     </insert>
-    <select id="getArticleInfoById" resultType="com.luopc1218.luopc1218server.entity.article.Article">
-        select id,
-               title,
-               description,
-               content,
-               authorId,
-               createTime,
-               updateTime,
-               deleteTime
-        from article
-        where id = #{articleId}
-    </select>
     <insert id="addArticleTags" useGeneratedKeys="true" keyProperty="id">
         insert into article_tag(name) values
         <foreach item="item" collection="list" separator=",">
@@ -50,14 +39,29 @@
             (#{item.articleId},#{item.tagId})
         </foreach>
     </insert>
-
-    <select id="getArticleList" resultMap="getArticleInfoResponse">
+    <select id="getArticleInfo" resultMap="getArticleInfoResponseMap">
         select a.id,
                title,
                description,
                content,
                authorId,
-               u.name as authorName,
+               u.name      as authorName,
+               u.avatarUrl as authorAvatarUrl,
+               a.createTime,
+               updateTime,
+               deleteTime
+        from article a
+                 left join user u on a.authorId = u.id
+        where a.id = #{getArticleInfoParams.id}
+          and deleteTime is null;
+    </select>
+    <select id="getArticleList" resultMap="getArticleInfoResponseMap">
+        select a.id,
+               title,
+               description,
+               content,
+               authorId,
+               u.name      as authorName,
                u.avatarUrl as authorAvatarUrl,
                a.createTime,
                updateTime,
@@ -69,8 +73,15 @@
     <select id="getArticleTagList" resultType="com.luopc1218.luopc1218server.entity.article.ArticleTag">
         SELECT at.id, at.name, at.createTime
         from article_tag_link atl
-                 left join article_tag at on atl.tagId = at.id
-        where atl.articleId = #{articleId}
-          and name like '${query}%';
+        left join article_tag at on atl.tagId = at.id
+        where true
+        <if test="articleId != null">
+            and atl.articleId = #{articleId}
+        </if>
+        <if test="query != null">
+            and name like '${query}%'
+        </if>
+        ;
     </select>
+
 </mapper>

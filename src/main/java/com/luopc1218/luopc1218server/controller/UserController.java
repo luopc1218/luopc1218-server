@@ -2,6 +2,7 @@ package com.luopc1218.luopc1218server.controller;
 
 import com.luopc1218.luopc1218server.entity.request.ApiResponse;
 import com.luopc1218.luopc1218server.entity.request.ApiResponseStatus;
+import com.luopc1218.luopc1218server.entity.user.GetUserInfoParams;
 import com.luopc1218.luopc1218server.entity.user.SignInBody;
 import com.luopc1218.luopc1218server.entity.user.SignUpBody;
 import com.luopc1218.luopc1218server.entity.user.User;
@@ -26,22 +27,18 @@ public class UserController {
     }
 
     @RequestMapping(value = "/getUserInfo", method = RequestMethod.GET)
-    public ApiResponse getUserInfo(HttpServletRequest request, @RequestHeader("Authorization") String accessToken, @RequestParam(value = "id", required = false) String id) {
+    public ApiResponse getUserInfo(HttpServletRequest request, @RequestParam(value = "id", required = false) Integer id, @RequestParam(value = "name", required = false) String name) {
         try {
-            Integer userId;
-            if (id != null) {
-                userId = Integer.parseInt(id);
-            } else {
-                userId = (Integer) request.getAttribute("CURRENT_USER_ID");
-
+            if (id == null && name == null) {
+                Integer userId = (Integer) request.getAttribute("CURRENT_USER_ID");
+                if (userId == null) {
+                    return ApiResponse.fail(ApiResponseStatus.NEED_SIGN_IN);
+                } else {
+                    return ApiResponse.success(userService.getUserInfo(new GetUserInfoParams(userId)));
+                }
             }
-            if (userId != null) {
-                User user = userService.getUserInfo(userId);
-                return ApiResponse.success(user);
-            } else {
-                return ApiResponse.fail(ApiResponseStatus.NEED_SIGN_IN);
-            }
-
+            GetUserInfoParams getUserInfoParams = new GetUserInfoParams(id, name);
+            return ApiResponse.success(userService.getUserInfo(getUserInfoParams));
         } catch (Exception e) {
             return ApiResponse.fail(e.getMessage());
         }

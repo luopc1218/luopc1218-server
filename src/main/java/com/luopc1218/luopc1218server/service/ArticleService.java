@@ -18,7 +18,7 @@ public class ArticleService {
         return articleMapper.getArticleTagList(query);
     }
 
-    public Article addArticle(AddArticleBody addArticleBody) throws RuntimeException {
+    public GetArticleInfoResponse addArticle(AddArticleBody addArticleBody) throws RuntimeException {
         articleMapper.addArticle(addArticleBody);
         Integer articleId = addArticleBody.getId();
         List<Integer> tagIdList = addArticleBody.getTags();
@@ -30,12 +30,9 @@ public class ArticleService {
         }
 //        绑定标签
         this.addArticleTagLink(articleId, tagIdList);
-        return this.getArticleInfoById(articleId);
+        return this.getArticleInfo(new GetArticleInfoParams(articleId));
     }
 
-    public Article getArticleInfoById(Integer articleId) throws RuntimeException {
-        return articleMapper.getArticleInfoById(articleId);
-    }
 
     public void addArticleTagLink(Integer articleId, List<Integer> tagIdList) throws RuntimeException {
         List<AddArticleTagLinkBody> addArticleTagLinkBodyList = new ArrayList<>();
@@ -54,7 +51,11 @@ public class ArticleService {
         return newArticleTagIdList;
     }
 
-    public List<GetArticleListResponse> getArticleList(GetArticleListParams getArticleListParams) {
+    public List<GetArticleListResponse> getArticleList(GetArticleListParams getArticleListParams) throws RuntimeException {
         return articleMapper.getArticleList(getArticleListParams);
+    }
+
+    public GetArticleInfoResponse getArticleInfo(GetArticleInfoParams getArticleInfoParams) throws RuntimeException {
+        return articleMapper.getArticleInfo(getArticleInfoParams);
     }
 }

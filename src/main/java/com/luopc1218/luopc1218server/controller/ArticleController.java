@@ -1,7 +1,8 @@
 package com.luopc1218.luopc1218server.controller;
 
 import com.luopc1218.luopc1218server.entity.article.AddArticleBody;
-import com.luopc1218.luopc1218server.entity.article.Article;
+import com.luopc1218.luopc1218server.entity.article.GetArticleInfoParams;
+import com.luopc1218.luopc1218server.entity.article.GetArticleInfoResponse;
 import com.luopc1218.luopc1218server.entity.article.GetArticleListParams;
 import com.luopc1218.luopc1218server.entity.request.ApiResponse;
 import com.luopc1218.luopc1218server.service.ArticleService;
@@ -36,13 +37,23 @@ public class ArticleController {
     }
 
     @JsonWebTokenRequire
-    @RequestMapping(value = "addArticle", method = RequestMethod.POST)
+    @RequestMapping(value = "/addArticle", method = RequestMethod.POST)
     public ApiResponse addArticle(HttpServletRequest request, @RequestBody AddArticleBody addArticleBody) {
         try {
             Integer userId = (Integer) request.getAttribute("CURRENT_USER_ID");
             addArticleBody.setUserId(userId);
-            Article article = articleService.addArticle(addArticleBody);
-            return ApiResponse.success(article);
+            return ApiResponse.success(articleService.addArticle(addArticleBody));
+        } catch (Exception e) {
+            return ApiResponse.fail(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/getArticleInfo", method = RequestMethod.GET)
+    public ApiResponse getArticleInfo(@RequestParam("id") Integer id) {
+        try {
+            GetArticleInfoParams getArticleInfoParams = new GetArticleInfoParams(id);
+            GetArticleInfoResponse getArticleListResponse = articleService.getArticleInfo(getArticleInfoParams);
+            return ApiResponse.success(getArticleListResponse);
         } catch (Exception e) {
             return ApiResponse.fail(e.getMessage());
         }

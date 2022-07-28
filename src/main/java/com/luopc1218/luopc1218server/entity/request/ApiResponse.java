@@ -41,7 +41,7 @@ public class ApiResponse {
     }
 
     public static ApiResponse fail(String message) {
-        return new ApiResponse(200, message, false, null);
+        return new ApiResponse(500, message, false, null);
     }
 
     public static ApiResponse fail(ApiResponseStatus apiResponseStatus) {

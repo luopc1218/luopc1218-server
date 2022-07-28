@@ -15,8 +15,8 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
-    public GetUserInfoResponse getUserInfo(Integer id) throws RuntimeException {
-        GetUserInfoResponse getUserInfoResponse = userMapper.getUserInfo(id);
+    public GetUserInfoResponse getUserInfo(GetUserInfoParams getUserInfoParams) throws RuntimeException {
+        GetUserInfoResponse getUserInfoResponse = userMapper.getUserInfo(getUserInfoParams);
         if (getUserInfoResponse == null) {
             throw new RuntimeException("用户不存在");
         }
@@ -65,7 +65,7 @@ public class UserService {
             UserEmail userEmail = new UserEmail(userId, email);
             userMapper.addUserEmail(userEmail);
         }
-        return this.getUserInfo(userId);
+        return this.getUserInfo(new GetUserInfoParams(userId));
     }
 
     public void changeAvatar(Integer id, String url) throws RuntimeException {
@@ -89,4 +89,6 @@ public class UserService {
             throw new RuntimeException("用户名已存在");
         }
     }
+
+
 }
