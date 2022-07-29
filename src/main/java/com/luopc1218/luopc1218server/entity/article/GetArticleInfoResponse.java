@@ -2,11 +2,13 @@ package com.luopc1218.luopc1218server.entity.article;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class GetArticleInfoResponse {
     private Integer id;
     private String title;

@@ -14,8 +14,8 @@ public class ArticleService {
     @Autowired
     ArticleMapper articleMapper;
 
-    public List<ArticleTag> getArticleTagList(String query) throws RuntimeException {
-        return articleMapper.getArticleTagList(query);
+    public List<ArticleTag> getArticleTagList(GetArticleTagListParams getArticleTagListParams) throws RuntimeException {
+        return articleMapper.getArticleTagList(getArticleTagListParams);
     }
 
     public GetArticleInfoResponse addArticle(AddArticleBody addArticleBody) throws RuntimeException {

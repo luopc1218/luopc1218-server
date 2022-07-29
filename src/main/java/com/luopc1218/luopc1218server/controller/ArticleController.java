@@ -1,9 +1,6 @@
 package com.luopc1218.luopc1218server.controller;
 
-import com.luopc1218.luopc1218server.entity.article.AddArticleBody;
-import com.luopc1218.luopc1218server.entity.article.GetArticleInfoParams;
-import com.luopc1218.luopc1218server.entity.article.GetArticleInfoResponse;
-import com.luopc1218.luopc1218server.entity.article.GetArticleListParams;
+import com.luopc1218.luopc1218server.entity.article.*;
 import com.luopc1218.luopc1218server.entity.request.ApiResponse;
 import com.luopc1218.luopc1218server.service.ArticleService;
 import com.luopc1218.luopc1218server.util.annotation.JsonWebTokenRequire;
@@ -30,7 +27,11 @@ public class ArticleController {
     @RequestMapping(value = "/getArticleTagList", method = RequestMethod.GET)
     public ApiResponse getArticleTagList(@RequestParam("query") String query) {
         try {
-            return ApiResponse.success(articleService.getArticleTagList(query));
+            GetArticleTagListParams getArticleTagListParams = new GetArticleTagListParams();
+            if (query != null) {
+                getArticleTagListParams.setQuery(query);
+            }
+            return ApiResponse.success(articleService.getArticleTagList(getArticleTagListParams));
         } catch (Exception e) {
             return ApiResponse.fail(e.getMessage());
         }

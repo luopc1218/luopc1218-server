@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper
 public interface ArticleMapper {
 
-    List<ArticleTag> getArticleTagList(String query);
+    List<ArticleTag> getArticleTagList(@Param("getArticleTagListParams") GetArticleTagListParams getArticleTagListParams);
 
     void addArticle(@Param("addArticleBody") AddArticleBody addArticleBody);
 

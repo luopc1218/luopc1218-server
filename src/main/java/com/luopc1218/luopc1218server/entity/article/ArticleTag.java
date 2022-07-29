@@ -1,20 +1,16 @@
 package com.luopc1218.luopc1218server.entity.article;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.sql.Timestamp;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ArticleTag {
-
     private Integer id;
     private String name;
     private java.sql.Timestamp createTime;
 
-    public ArticleTag(Integer id, String name, Timestamp createTime) {
-        this.id = id;
-        this.name = name;
-        this.createTime = createTime;
-    }
 }

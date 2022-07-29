@@ -15,9 +15,9 @@
         <result column="createTime" property="createTime"/>
         <result column="updateTime" property="updateTime"/>
         <result column="deleteTime" property="deleteTime"/>
-        <collection property="tags" javaType="java.util.ArrayList"
+        <collection property="tags" javaType="java.util.List"
                     ofType="com.luopc1218.luopc1218server.entity.article.ArticleTag" column="{articleId=id}"
-                    select="getArticleTagList">
+                    select="getArticleTagLinkList">
         </collection>
     </resultMap>
 
@@ -70,16 +70,22 @@
                  left join user u on a.authorId = u.id
         where deleteTime is null;
     </select>
-    <select id="getArticleTagList" resultType="com.luopc1218.luopc1218server.entity.article.ArticleTag">
+    <select id="getArticleTagLinkList" resultType="com.luopc1218.luopc1218server.entity.article.ArticleTag">
         SELECT at.id, at.name, at.createTime
         from article_tag_link atl
         left join article_tag at on atl.tagId = at.id
         where true
         <if test="articleId != null">
-            and atl.articleId = #{articleId}
+            and articleId = #{articleId}
         </if>
-        <if test="query != null">
-            and name like '${query}%'
+        ;
+    </select>
+    <select id="getArticleTagList" resultType="com.luopc1218.luopc1218server.entity.article.ArticleTag">
+        SELECT at.id, at.name, at.createTime
+        from article_tag at
+        where true
+        <if test="getArticleTagListParams.query != null">
+            and name like '${getArticleTagListParams.query}%'
         </if>
         ;
     </select>
