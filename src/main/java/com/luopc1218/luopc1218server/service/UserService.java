@@ -48,7 +48,9 @@ public class UserService {
         Integer telCodeId = signUpBody.getTelCodeId();
         String email = signUpBody.getEmail();
         String avatarUrl = signUpBody.getAvatar();
-        User user = new User(name, avatarUrl);
+        User user = new User();
+        user.setName(name);
+        user.setAvatarUrl(avatarUrl);
         userMapper.addUser(user);
         Integer userId = user.getId();
 //        绑定密码
@@ -65,7 +67,9 @@ public class UserService {
             UserEmail userEmail = new UserEmail(userId, email);
             userMapper.addUserEmail(userEmail);
         }
-        return this.getUserInfo(new GetUserInfoParams(userId));
+        GetUserInfoParams getUserInfoParams = new GetUserInfoParams();
+        getUserInfoParams.setId(userId);
+        return this.getUserInfo(getUserInfoParams);
     }
 
     public void changeAvatar(Integer id, String url) throws RuntimeException {

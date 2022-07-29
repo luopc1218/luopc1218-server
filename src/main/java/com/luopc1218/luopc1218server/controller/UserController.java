@@ -5,7 +5,6 @@ import com.luopc1218.luopc1218server.entity.request.ApiResponseStatus;
 import com.luopc1218.luopc1218server.entity.user.GetUserInfoParams;
 import com.luopc1218.luopc1218server.entity.user.SignInBody;
 import com.luopc1218.luopc1218server.entity.user.SignUpBody;
-import com.luopc1218.luopc1218server.entity.user.User;
 import com.luopc1218.luopc1218server.service.UserService;
 import com.luopc1218.luopc1218server.util.annotation.JsonWebTokenRequire;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,15 +28,29 @@ public class UserController {
     @RequestMapping(value = "/getUserInfo", method = RequestMethod.GET)
     public ApiResponse getUserInfo(HttpServletRequest request, @RequestParam(value = "id", required = false) Integer id, @RequestParam(value = "name", required = false) String name) {
         try {
+            GetUserInfoParams getUserInfoParams = new GetUserInfoParams();
             if (id == null && name == null) {
                 Integer userId = (Integer) request.getAttribute("CURRENT_USER_ID");
                 if (userId == null) {
                     return ApiResponse.fail(ApiResponseStatus.NEED_SIGN_IN);
                 } else {
-                    return ApiResponse.success(userService.getUserInfo(new GetUserInfoParams(userId)));
+                    getUserInfoParams.setId(userId);
+                    return ApiResponse.success(userService.getUserInfo(getUserInfoParams));
                 }
             }
-            GetUserInfoParams getUserInfoParams = new GetUserInfoParams(id, name);
+            getUserInfoParams.setId(id);
+            getUserInfoParams.setName(name);
+            return ApiResponse.success(userService.getUserInfo(getUserInfoParams));
+        } catch (Exception e) {
+            return ApiResponse.fail(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/getAdminInfo", method = RequestMethod.GET)
+    public ApiResponse getAdminInfo() {
+        try {
+            GetUserInfoParams getUserInfoParams = new GetUserInfoParams();
+            getUserInfoParams.setName("luopc1218");
             return ApiResponse.success(userService.getUserInfo(getUserInfoParams));
         } catch (Exception e) {
             return ApiResponse.fail(e.getMessage());
