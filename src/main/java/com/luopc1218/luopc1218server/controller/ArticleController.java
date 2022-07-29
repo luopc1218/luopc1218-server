@@ -16,8 +16,9 @@ public class ArticleController {
     ArticleService articleService;
 
     @RequestMapping(value = "/getArticleList", method = RequestMethod.GET)
-    public ApiResponse getArticleList(@RequestParam(value = "getArticleListParams", required = false) GetArticleListParams getArticleListParams) {
+    public ApiResponse getArticleList() {
         try {
+            GetArticleListParams getArticleListParams = new GetArticleListParams();
             return ApiResponse.success(articleService.getArticleList(getArticleListParams));
         } catch (Exception e) {
             return ApiResponse.fail(e.getMessage());
@@ -52,7 +53,10 @@ public class ArticleController {
     @RequestMapping(value = "/getArticleInfo", method = RequestMethod.GET)
     public ApiResponse getArticleInfo(@RequestParam("id") Integer id) {
         try {
-            GetArticleInfoParams getArticleInfoParams = new GetArticleInfoParams(id);
+            GetArticleInfoParams getArticleInfoParams = new GetArticleInfoParams();
+            if (id != null) {
+                getArticleInfoParams.setId(id);
+            }
             GetArticleInfoResponse getArticleListResponse = articleService.getArticleInfo(getArticleInfoParams);
             return ApiResponse.success(getArticleListResponse);
         } catch (Exception e) {
