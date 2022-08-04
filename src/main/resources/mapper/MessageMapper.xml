@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.luopc1218.luopc1218server.repository.MessageMapper">
+    <insert id="addLeaveMessage" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into leave_message(content, authorId)
+        VALUES (#{addLeaveMessageBody.content}, #{addLeaveMessageBody.authorId});
+    </insert>
+    <select id="getLeaveMessageList" resultType="com.luopc1218.luopc1218server.entity.message.GetLeaveMessageResponse">
+        select lm.id,
+        lm.content,
+        u.id as authorId,
+        u.name as authorName,
+        u.avatarUrl as authorAvatarUrl,
+        lm.createTime
+        from leave_message lm
+        left join user u on lm.authorId = u.id
+        where true
+        order by lm.createTime desc
+        <if test="getLeaveMessageListParams.limit != null">
+            limit #{getLeaveMessageListParams.limit},#{getLeaveMessageListParams.pageSize}
+        </if>
+        ;
+    </select>
+    <select id="getLeaveMessageListCount" resultType="integer">
+        select COUNT(*) as count
+        from leave_message lm
+    </select>
+    <select id="getLeaveMessageById" resultType="com.luopc1218.luopc1218server.entity.message.GetLeaveMessageResponse">
+        select lm.id,
+               lm.content,
+               u.id        as authorId,
+               u.name      as authorName,
+               u.avatarUrl as authorAvatarUrl,
+               lm.createTime
+        from leave_message lm
+                 left join user u on lm.authorId = u.id
+        where lm.id = #{messageId}
+    </select>
+</mapper>

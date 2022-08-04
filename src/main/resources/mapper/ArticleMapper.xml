@@ -68,7 +68,8 @@
                deleteTime
         from article a
                  left join user u on a.authorId = u.id
-        where deleteTime is null;
+        where deleteTime is null
+        order by a.updateTime desc, a.createTime desc;
     </select>
     <select id="getArticleTagLinkList" resultType="com.luopc1218.luopc1218server.entity.article.ArticleTag">
         SELECT at.id, at.name, at.createTime
