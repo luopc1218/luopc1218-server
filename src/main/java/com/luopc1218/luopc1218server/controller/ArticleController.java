@@ -16,9 +16,9 @@ public class ArticleController {
     ArticleService articleService;
 
     @RequestMapping(value = "/getArticleList", method = RequestMethod.GET)
-    public ApiResponse getArticleList() {
+    public ApiResponse getArticleList(@RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize) {
         try {
-            GetArticleListParams getArticleListParams = new GetArticleListParams();
+            GetArticleListParams getArticleListParams = new GetArticleListParams(page,pageSize);
             return ApiResponse.success(articleService.getArticleList(getArticleListParams));
         } catch (Exception e) {
             return ApiResponse.fail(e.getMessage());

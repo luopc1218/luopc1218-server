@@ -20,5 +20,7 @@ public interface ArticleMapper {
 
     List<GetArticleListResponse> getArticleList(@Param("getArticleListParams") GetArticleListParams getArticleListParams);
 
+    Integer getArticleListTotalCount();
+
     GetArticleInfoResponse getArticleInfo(@Param("getArticleInfoParams") GetArticleInfoParams getArticleInfoParams);
 }

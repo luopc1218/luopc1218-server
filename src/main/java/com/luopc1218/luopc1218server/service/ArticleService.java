@@ -1,6 +1,7 @@
 package com.luopc1218.luopc1218server.service;
 
 import com.luopc1218.luopc1218server.entity.article.*;
+import com.luopc1218.luopc1218server.entity.request.PaginationData;
 import com.luopc1218.luopc1218server.repository.ArticleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,8 +52,10 @@ public class ArticleService {
         return newArticleTagIdList;
     }
 
-    public List<GetArticleListResponse> getArticleList(GetArticleListParams getArticleListParams) throws RuntimeException {
-        return articleMapper.getArticleList(getArticleListParams);
+    public PaginationData<GetArticleListResponse> getArticleList(GetArticleListParams getArticleListParams) throws RuntimeException {
+        List<GetArticleListResponse> articleList = articleMapper.getArticleList(getArticleListParams);
+        Integer articleListTotalCount = articleMapper.getArticleListTotalCount();
+        return new PaginationData<>(articleList, articleListTotalCount);
     }
 
     public GetArticleInfoResponse getArticleInfo(GetArticleInfoParams getArticleInfoParams) throws RuntimeException {
