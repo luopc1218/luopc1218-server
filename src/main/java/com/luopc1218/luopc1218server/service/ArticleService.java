@@ -24,20 +24,22 @@ public class ArticleService {
         Integer articleId = addArticleBody.getId();
         List<Integer> tagIdList = addArticleBody.getTags();
         List<String> newTagNameList = addArticleBody.getNewTags();
-//        添加标签
-        if (newTagNameList.size() > 0) {
-            List<Integer> newTagIdList = this.addArticleTags(addArticleBody.getNewTags());
-            tagIdList.addAll(newTagIdList);
-        }
 //        绑定标签
-        this.addArticleTagLink(articleId, tagIdList);
+        this.addArticleTagLink(articleId, tagIdList, newTagNameList);
         return this.getArticleInfo(new GetArticleInfoParams(articleId));
     }
 
 
-    public void addArticleTagLink(Integer articleId, List<Integer> tagIdList) throws RuntimeException {
+    public void addArticleTagLink(Integer articleId, List<Integer> tagIdList, List<String> newTagNameList) throws RuntimeException {
+        //        添加标签
+        if (newTagNameList.size() > 0) {
+            List<Integer> newTagIdList = this.addArticleTags(newTagNameList);
+            tagIdList.addAll(newTagIdList);
+        }
         List<AddArticleTagLinkBody> addArticleTagLinkBodyList = new ArrayList<>();
         tagIdList.forEach(tagId -> addArticleTagLinkBodyList.add(new AddArticleTagLinkBody(articleId, tagId)));
+//        移除原有tag
+        articleMapper.deleteArticleTagLink(articleId);
         if (addArticleTagLinkBodyList.size() > 0) {
             articleMapper.addArticleTagLink(addArticleTagLinkBodyList);
         }
@@ -60,5 +62,20 @@ public class ArticleService {
 
     public GetArticleInfoResponse getArticleInfo(GetArticleInfoParams getArticleInfoParams) throws RuntimeException {
         return articleMapper.getArticleInfo(getArticleInfoParams);
+    }
+
+    public GetArticleInfoResponse saveArticle(SaveArticleBody saveArticleBody) throws RuntimeException {
+        articleMapper.saveArticle(saveArticleBody);
+        Integer articleId = saveArticleBody.getId();
+        List<Integer> tagIdList = saveArticleBody.getTags();
+        List<String> newTagNameList = saveArticleBody.getNewTags();
+//        绑定标签
+        this.addArticleTagLink(articleId, tagIdList, newTagNameList);
+        return this.getArticleInfo(new GetArticleInfoParams(articleId));
+    }
+
+    public void deleteArticle(DeleteArticleBody deleteArticleBody) throws RuntimeException {
+        articleMapper.deleteArticleTagLink(deleteArticleBody.getArticleId());
+        articleMapper.deleteArticle(deleteArticleBody);
     }
 }

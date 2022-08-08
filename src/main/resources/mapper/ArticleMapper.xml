@@ -26,6 +26,21 @@
         values (#{addArticleBody.title}, #{addArticleBody.description}, #{addArticleBody.content},
                 #{addArticleBody.userId});
     </insert>
+    <update id="saveArticle">
+        update article
+        set title=#{saveArticleBody.title},
+            description=#{saveArticleBody.description},
+            content=#{saveArticleBody.content},
+            updateTime=CURRENT_TIMESTAMP
+        where id = #{saveArticleBody.id}
+    </update>
+    <update id="deleteArticle">
+        update
+            article
+        set deleteTime=CURRENT_TIMESTAMP
+        where id = #{deleteArticleBody.articleId}
+          and authorId = #{deleteArticleBody.userId}
+    </update>
     <insert id="addArticleTags" useGeneratedKeys="true" keyProperty="id">
         insert into article_tag(name) values
         <foreach item="item" collection="list" separator=",">
@@ -39,6 +54,11 @@
             (#{item.articleId},#{item.tagId})
         </foreach>
     </insert>
+    <delete id="deleteArticleTagLink">
+        delete
+        from article_tag_link
+        where articleId = #{articleId};
+    </delete>
     <select id="getArticleInfo" resultMap="getArticleInfoResponseMap">
         select a.id,
                title,

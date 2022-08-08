@@ -18,7 +18,7 @@ public class ArticleController {
     @RequestMapping(value = "/getArticleList", method = RequestMethod.GET)
     public ApiResponse getArticleList(@RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize) {
         try {
-            GetArticleListParams getArticleListParams = new GetArticleListParams(page,pageSize);
+            GetArticleListParams getArticleListParams = new GetArticleListParams(page, pageSize);
             return ApiResponse.success(articleService.getArticleList(getArticleListParams));
         } catch (Exception e) {
             return ApiResponse.fail(e.getMessage());
@@ -45,6 +45,31 @@ public class ArticleController {
             Integer userId = (Integer) request.getAttribute("CURRENT_USER_ID");
             addArticleBody.setUserId(userId);
             return ApiResponse.success(articleService.addArticle(addArticleBody));
+        } catch (Exception e) {
+            return ApiResponse.fail(e.getMessage());
+        }
+    }
+
+    @JsonWebTokenRequire
+    @RequestMapping(value = "/saveArticle", method = RequestMethod.POST)
+    public ApiResponse saveArticle(HttpServletRequest request, @RequestBody SaveArticleBody saveArticleBody) {
+        try {
+            Integer userId = (Integer) request.getAttribute("CURRENT_USER_ID");
+            saveArticleBody.setUserId(userId);
+            return ApiResponse.success(articleService.saveArticle(saveArticleBody));
+        } catch (Exception e) {
+            return ApiResponse.fail(e.getMessage());
+        }
+    }
+
+    @JsonWebTokenRequire
+    @RequestMapping(value = "/deleteArticle", method = RequestMethod.POST)
+    public ApiResponse deleteArticle(HttpServletRequest request, @RequestBody DeleteArticleBody deleteArticleBody) {
+        try {
+            Integer userId = (Integer) request.getAttribute("CURRENT_USER_ID");
+            deleteArticleBody.setUserId(userId);
+            articleService.deleteArticle(deleteArticleBody);
+            return ApiResponse.success(true);
         } catch (Exception e) {
             return ApiResponse.fail(e.getMessage());
         }

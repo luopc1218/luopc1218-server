@@ -23,4 +23,10 @@ public interface ArticleMapper {
     Integer getArticleListTotalCount();
 
     GetArticleInfoResponse getArticleInfo(@Param("getArticleInfoParams") GetArticleInfoParams getArticleInfoParams);
+
+    void saveArticle(@Param("saveArticleBody") SaveArticleBody saveArticleBody);
+
+    void deleteArticleTagLink(Integer articleId);
+
+    void deleteArticle(@Param("deleteArticleBody") DeleteArticleBody deleteArticleBody);
 }
