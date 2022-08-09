@@ -9,12 +9,9 @@ spring:
     password: peichun92755
     url: jdbc:mysql://106.52.172.134:3306/luopc1218server_develop
     username: luopc1218
-  flyway:
-    enabled: true
-    encoding: UTF-8
-    locations: classpath:db/migration
-    sql-migration-prefix: V
-    sql-migration-separator: __
-    sql-migration-suffixes: .sql
-    validate-on-migrate: true
-    baseline-on-migrate: true
+logging:
+  level:
+    com:
+      luopc1218:
+        luopc1218server:
+          repository: debug

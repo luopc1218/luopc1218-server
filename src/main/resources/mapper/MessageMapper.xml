@@ -19,12 +19,11 @@
         order by lm.createTime desc
         <if test="getLeaveMessageListParams.limit != null">
             limit #{getLeaveMessageListParams.limit},#{getLeaveMessageListParams.pageSize}
-        </if>
-        ;
+        </if>;
     </select>
     <select id="getLeaveMessageListCount" resultType="integer">
         select COUNT(*) as count
-        from leave_message lm
+        from leave_message lm;
     </select>
     <select id="getLeaveMessageById" resultType="com.luopc1218.luopc1218server.entity.message.GetLeaveMessageResponse">
         select lm.id,
@@ -35,6 +34,6 @@
                lm.createTime
         from leave_message lm
                  left join user u on lm.authorId = u.id
-        where lm.id = #{messageId}
+        where lm.id = #{messageId};
     </select>
 </mapper>
