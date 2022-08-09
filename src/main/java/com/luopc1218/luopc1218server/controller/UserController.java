@@ -22,7 +22,7 @@ public class UserController {
     @JsonWebTokenRequire
     @RequestMapping(value = "/checkSignIn", method = RequestMethod.GET)
     public ApiResponse checkSignIn() {
-        return ApiResponse.success(true);
+        return ApiResponse.success();
     }
 
     @RequestMapping(value = "/getUserInfo", method = RequestMethod.GET)
@@ -105,7 +105,7 @@ public class UserController {
     public ApiResponse checkSignUpUsername(@RequestParam("username") String username) {
         try {
             userService.checkSignUpUsername(username);
-            return ApiResponse.success(true);
+            return ApiResponse.success();
         } catch (Exception e) {
             return ApiResponse.fail(e.getMessage());
         }

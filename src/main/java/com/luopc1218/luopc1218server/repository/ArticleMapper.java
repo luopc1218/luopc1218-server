@@ -29,4 +29,31 @@ public interface ArticleMapper {
     void deleteArticleTagLink(Integer articleId);
 
     void deleteArticle(@Param("deleteArticleBody") DeleteArticleBody deleteArticleBody);
+
+    Integer getArticleFavoriteCount(Integer articleId);
+
+    Integer getArticleEvaluateCount(Integer articleId, Integer evaluate);
+
+    ArticleFavorite getArticleFavorite(Integer articleId, Integer userId);
+
+    ArticleEvaluate getArticleEvaluate(Integer articleId, Integer userId);
+
+    void deleteArticleFavorite(Integer articleId, Integer userId);
+
+    void addArticleFavorite(Integer articleId, Integer userId);
+
+    void addArticleViewCount(@Param("addArticleViewCountBody") AddArticleViewCountBody addArticleViewCountBody);
+
+    void deleteArticleEvaluate(Integer articleEvaluateId);
+
+    void changeArticleEvaluate(Integer id, Integer evaluate);
+
+    void addArticleEvaluat(Integer articleId, Integer userId, Integer evaluate);
+
+
+    void addArticleComment(@Param("addArticleCommentBody") AddArticleCommentBody addArticleCommentBody);
+
+    List<ArticleComment> getArticleCommentList(@Param("getArticleCommentListParams") GetArticleCommentListParams getArticleCommentListParams);
+
+    Integer getArticleCommentCount(@Param("getArticleCommentListParams") GetArticleCommentListParams getArticleCommentListParams);
 }

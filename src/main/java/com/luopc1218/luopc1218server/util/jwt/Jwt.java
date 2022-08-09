@@ -11,7 +11,7 @@ import java.util.Date;
 public class Jwt {
 
     //    过期时间：12小时
-    public static final long EXPIRE_TIME = 1000 * 60 * 60 * 12;
+    public static final Integer EXPIRE_TIME = 1000 * 60 * 60 * 12;
     public static final String IssuerName = "luopc1218server";
     public static final Algorithm algorithm = Algorithm.HMAC256(IssuerName);
 

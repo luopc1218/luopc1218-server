@@ -64,6 +64,20 @@ public class ArticleService {
         return articleMapper.getArticleInfo(getArticleInfoParams);
     }
 
+    public GetArticleEvaluateResponse getArticleEvaluate(Integer articleId, Integer userId) throws RuntimeException {
+        GetArticleEvaluateResponse getArticleEvaluateResponse = new GetArticleEvaluateResponse();
+        getArticleEvaluateResponse.setFavoriteCount(articleMapper.getArticleFavoriteCount(articleId));
+        getArticleEvaluateResponse.setGoodCount(articleMapper.getArticleEvaluateCount(articleId, 1));
+        getArticleEvaluateResponse.setBadCount(articleMapper.getArticleEvaluateCount(articleId, 0));
+        if (userId != null) {
+            ArticleEvaluate articleEvaluate = articleMapper.getArticleEvaluate(articleId, userId);
+            getArticleEvaluateResponse.setPickedFavorite(articleMapper.getArticleFavorite(articleId, userId) != null);
+            getArticleEvaluateResponse.setPickedGood(articleEvaluate != null && articleEvaluate.getEvaluate() == 1);
+            getArticleEvaluateResponse.setPickedBad(articleEvaluate != null && articleEvaluate.getEvaluate() != 1);
+        }
+        return getArticleEvaluateResponse;
+    }
+
     public GetArticleInfoResponse saveArticle(SaveArticleBody saveArticleBody) throws RuntimeException {
         articleMapper.saveArticle(saveArticleBody);
         Integer articleId = saveArticleBody.getId();
@@ -77,5 +91,61 @@ public class ArticleService {
     public void deleteArticle(DeleteArticleBody deleteArticleBody) throws RuntimeException {
         articleMapper.deleteArticleTagLink(deleteArticleBody.getArticleId());
         articleMapper.deleteArticle(deleteArticleBody);
+    }
+
+    public void toggleArticleEvaluate(ToggleArticleEvaluateBody toggleArticleEvaluateBody) throws RuntimeException {
+        Integer articleId = toggleArticleEvaluateBody.getArticleId();
+        Integer userId = toggleArticleEvaluateBody.getUserId();
+        String evaluateType = toggleArticleEvaluateBody.getEvaluateType();
+        switch (evaluateType) {
+            case "favorite" -> {
+                if (articleMapper.getArticleFavorite(articleId, userId) != null) {
+                    articleMapper.deleteArticleFavorite(articleId, userId);
+                } else {
+                    articleMapper.addArticleFavorite(articleId, userId);
+                }
+            }
+            case "good" -> {
+                ArticleEvaluate articleEvaluate = articleMapper.getArticleEvaluate(articleId, userId);
+                if (articleEvaluate != null) {
+                    Integer articleEvaluateId = articleEvaluate.getId();
+                    if (articleEvaluate.getEvaluate() == 1) {
+                        articleMapper.deleteArticleEvaluate(articleEvaluateId);
+                    } else {
+                        articleMapper.changeArticleEvaluate(articleEvaluateId, 1);
+                    }
+                } else {
+                    articleMapper.addArticleEvaluat(articleId, userId, 1);
+                }
+            }
+            case "bad" -> {
+                ArticleEvaluate articleEvaluate = articleMapper.getArticleEvaluate(articleId, userId);
+                if (articleEvaluate != null) {
+                    Integer articleEvaluateId = articleEvaluate.getId();
+                    if (articleEvaluate.getEvaluate() == 2) {
+                        articleMapper.deleteArticleEvaluate(articleEvaluateId);
+                    } else {
+                        articleMapper.changeArticleEvaluate(articleEvaluateId, 0);
+                    }
+                } else {
+                    articleMapper.addArticleEvaluat(articleId, userId, 0);
+                }
+            }
+        }
+
+    }
+
+    public void addArticleViewCount(AddArticleViewCountBody addArticleViewCountBody) throws RuntimeException {
+        articleMapper.addArticleViewCount(addArticleViewCountBody);
+    }
+
+    public void addArticleComment(AddArticleCommentBody addArticleCommentBody) throws RuntimeException {
+        articleMapper.addArticleComment(addArticleCommentBody);
+    }
+
+    public PaginationData<ArticleComment> getArticleCommentList(GetArticleCommentListParams getArticleCommentListParams) throws RuntimeException {
+        List<ArticleComment> articleCommentList = articleMapper.getArticleCommentList(getArticleCommentListParams);
+        Integer articleCommentCount = articleMapper.getArticleCommentCount(getArticleCommentListParams);
+        return new PaginationData<>(articleCommentList, articleCommentCount);
     }
 }

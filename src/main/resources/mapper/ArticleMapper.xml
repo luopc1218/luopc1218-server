@@ -12,6 +12,7 @@
         <result column="authorId" property="authorId"/>
         <result column="authorName" property="authorName"/>
         <result column="authorAvatarUrl" property="authorAvatarUrl"/>
+        <result column="viewCount" property="viewCount"/>
         <result column="createTime" property="createTime"/>
         <result column="updateTime" property="updateTime"/>
         <result column="deleteTime" property="deleteTime"/>
@@ -67,6 +68,7 @@
                authorId,
                u.name      as authorName,
                u.avatarUrl as authorAvatarUrl,
+               a.viewCount,
                a.createTime,
                updateTime,
                deleteTime
@@ -83,6 +85,7 @@
         authorId,
         u.name as authorName,
         u.avatarUrl as authorAvatarUrl,
+        a.viewCount,
         a.createTime,
         updateTime,
         deleteTime
@@ -95,12 +98,55 @@
         </if>
         ;
     </select>
+    <update id="addArticleViewCount">
+        update article
+        set viewCount = viewCount + 1
+        where id = #{addArticleViewCountBody.articleId}
+    </update>
     <select id="getArticleListTotalCount" resultType="integer">
         select COUNT(*) as count
         from article
         where deleteTime is null
         ;
     </select>
+    <select id="getArticleFavoriteCount" resultType="integer">
+        select COUNT(*) as count
+        from article_favorite
+        where articleId = #{articleId};
+    </select>
+    <select id="getArticleEvaluateCount" resultType="integer">
+        select COUNT(*) as count
+        from article_evaluate ae
+        where articleId = #{articleId}
+          and evaluate = #{evaluate};
+    </select>
+    <select id="getArticleFavorite" resultType="com.luopc1218.luopc1218server.entity.article.ArticleFavorite">
+        select id, articleId, userId
+        from article_favorite
+        where articleId = #{articleId}
+          and userId = #{userId};
+    </select>
+    <select id="getArticleEvaluate" resultType="com.luopc1218.luopc1218server.entity.article.ArticleEvaluate">
+        select id, articleId, userId, evaluate
+        from article_evaluate
+        where articleId = #{articleId}
+          and userId = #{userId}
+    </select>
+    <delete id="deleteArticleEvaluate">
+        delete
+        from article_evaluate
+        where articleId = #{articleId}
+          and userId = #{userId};
+    </delete>
+    <update id="changeArticleEvaluate">
+        update article_evaluate
+        set evaluate=#{evaluate}
+        where id = #{id};
+    </update>
+    <insert id="addArticleEvaluat">
+        insert into article_evaluate(articleId, evaluate, userId)
+        VALUES (#{articleId}, #{evaluate}, #{userId});
+    </insert>
     <select id="getArticleTagLinkList" resultType="com.luopc1218.luopc1218server.entity.article.ArticleTag">
         SELECT at.id, at.name, at.createTime
         from article_tag_link atl
@@ -120,5 +166,37 @@
         </if>
         ;
     </select>
-
+    <delete id="deleteArticleFavorite">
+        delete
+        from article_favorite
+        where articleId = #{articleId}
+          and userId = #{userId};
+    </delete>
+    <insert id="addArticleFavorite">
+        insert into article_favorite(articleId, userId)
+        VALUES (#{articleId}, #{userId});
+    </insert>
+    <insert id="addArticleComment">
+        insert into article_comment(articleId, authorId, content)
+        values (#{addArticleCommentBody.articleId}, #{addArticleCommentBody.authorId}, #{addArticleCommentBody.content})
+    </insert>
+    <select id="getArticleCommentList"
+            resultType="com.luopc1218.luopc1218server.entity.article.GetArticleCommentListResponse">
+        select
+        ac.id, ac.articleId, ac.authorId, u.name as authorName, u.avatarUrl as authorAvatarUrl,ac.content, ac.targetId,
+        ac.createTime,
+        u.createTime
+        from article_comment ac
+        left join user u on ac.authorId = u.id
+        where articleId = #{getArticleCommentListParams.articleId}
+        order by ac.createTime desc
+        <if test="getArticleCommentListParams.limit != null">
+            limit #{getArticleCommentListParams.limit},#{getArticleCommentListParams.pageSize}
+        </if>
+    </select>
+    <select id="getArticleCommentCount" resultType="integer">
+        select COUNT(*) as count
+        from article_comment
+        where articleId = #{getArticleCommentListParams.articleId}
+    </select>
 </mapper>
