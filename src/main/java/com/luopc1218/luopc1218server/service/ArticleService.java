@@ -115,7 +115,7 @@ public class ArticleService {
                         articleMapper.changeArticleEvaluate(articleEvaluateId, 1);
                     }
                 } else {
-                    articleMapper.addArticleEvaluat(articleId, userId, 1);
+                    articleMapper.addArticleEvaluate(articleId, userId, 1);
                 }
             }
             case "bad" -> {
@@ -128,7 +128,7 @@ public class ArticleService {
                         articleMapper.changeArticleEvaluate(articleEvaluateId, 0);
                     }
                 } else {
-                    articleMapper.addArticleEvaluat(articleId, userId, 0);
+                    articleMapper.addArticleEvaluate(articleId, userId, 0);
                 }
             }
         }

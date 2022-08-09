@@ -48,7 +48,7 @@ public interface ArticleMapper {
 
     void changeArticleEvaluate(Integer id, Integer evaluate);
 
-    void addArticleEvaluat(Integer articleId, Integer userId, Integer evaluate);
+    void addArticleEvaluate(Integer articleId, Integer userId, Integer evaluate);
 
 
     void addArticleComment(@Param("addArticleCommentBody") AddArticleCommentBody addArticleCommentBody);
