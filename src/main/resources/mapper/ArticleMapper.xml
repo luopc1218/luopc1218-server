@@ -22,6 +22,22 @@
         </collection>
     </resultMap>
 
+    <resultMap id="getArticleCommentListResponseMap"
+               type="com.luopc1218.luopc1218server.entity.article.GetArticleCommentListResponse">
+        <result column="id" property="id"/>
+        <result column="articleId" property="articleId"/>
+        <result column="authorId" property="authorId"/>
+        <result column="authorName" property="authorName"/>
+        <result column="authorAvatarUrl" property="authorAvatarUrl"/>
+        <result column="content" property="content"/>
+        <result column="targetId" property="targetId"/>
+        <result column="createTime" property="createTime"/>
+        <collection property="subCommentCount"
+                    ofType="integer" column="{commentId=id}"
+                    select="getArticleSubCommentCount">
+        </collection>
+    </resultMap>
+
     <insert id="addArticle" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
         insert into article(title, description, content, authorId)
         values (#{addArticleBody.title}, #{addArticleBody.description}, #{addArticleBody.content},
@@ -135,8 +151,7 @@
     <delete id="deleteArticleEvaluate">
         delete
         from article_evaluate
-        where articleId = #{articleId}
-          and userId = #{userId};
+        where id = #{articleEvaluateId}
     </delete>
     <update id="changeArticleEvaluate">
         update article_evaluate
@@ -181,7 +196,7 @@
         values (#{addArticleCommentBody.articleId}, #{addArticleCommentBody.authorId}, #{addArticleCommentBody.content})
     </insert>
     <select id="getArticleCommentList"
-            resultType="com.luopc1218.luopc1218server.entity.article.GetArticleCommentListResponse">
+            resultMap="getArticleCommentListResponseMap">
         select
         ac.id, ac.articleId, ac.authorId, u.name as authorName, u.avatarUrl as authorAvatarUrl,ac.content, ac.targetId,
         ac.createTime,
@@ -199,4 +214,23 @@
         from article_comment
         where articleId = #{getArticleCommentListParams.articleId}
     </select>
+    <select id="getArticleSubCommentList" resultMap="getArticleCommentListResponseMap">
+        select
+        ac.id, ac.articleId, ac.authorId, u.name as authorName, u.avatarUrl as authorAvatarUrl,ac.content, ac.targetId,
+        ac.createTime,
+        u.createTime
+        from article_comment ac
+        left join user u on ac.authorId = u.id
+        where targetId = #{getArticleSubCommentListParams.commentId}
+        order by ac.createTime desc
+        <if test="getArticleSubCommentListParams.limit != null">
+            limit #{getArticleSubCommentListParams.limit},#{getArticleSubCommentListParams.pageSize}
+        </if>
+    </select>
+    <select id="getArticleSubCommentCount" resultType="integer">
+        select COUNT(*) as count
+        from article_comment
+        where targetId = #{commentId}
+    </select>
+
 </mapper>

@@ -145,4 +145,14 @@ public class ArticleController {
             return ApiResponse.fail(e.getMessage());
         }
     }
+
+    @RequestMapping(value = "/getArticleSubCommentList", method = RequestMethod.GET)
+    public ApiResponse getArticleSubCommentList(@Param("page") Integer page, @Param("pageSize") Integer pageSize, @Param("commentId") Integer commentId) {
+        try {
+            GetArticleSubCommentListParams getArticleSubCommentListParams = new GetArticleSubCommentListParams(page, pageSize, commentId);
+            return ApiResponse.success(articleService.getArticleSubCommentList(getArticleSubCommentListParams));
+        } catch (Exception e) {
+            return ApiResponse.fail(e.getMessage());
+        }
+    }
 }

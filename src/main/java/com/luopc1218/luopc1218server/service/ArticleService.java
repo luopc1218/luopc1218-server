@@ -122,7 +122,7 @@ public class ArticleService {
                 ArticleEvaluate articleEvaluate = articleMapper.getArticleEvaluate(articleId, userId);
                 if (articleEvaluate != null) {
                     Integer articleEvaluateId = articleEvaluate.getId();
-                    if (articleEvaluate.getEvaluate() == 2) {
+                    if (articleEvaluate.getEvaluate() == 0) {
                         articleMapper.deleteArticleEvaluate(articleEvaluateId);
                     } else {
                         articleMapper.changeArticleEvaluate(articleEvaluateId, 0);
@@ -147,5 +147,11 @@ public class ArticleService {
         List<ArticleComment> articleCommentList = articleMapper.getArticleCommentList(getArticleCommentListParams);
         Integer articleCommentCount = articleMapper.getArticleCommentCount(getArticleCommentListParams);
         return new PaginationData<>(articleCommentList, articleCommentCount);
+    }
+
+    public PaginationData<ArticleComment> getArticleSubCommentList(GetArticleSubCommentListParams getArticleSubCommentListParams) {
+        List<ArticleComment> articleSubCommentList = articleMapper.getArticleSubCommentList(getArticleSubCommentListParams);
+        Integer articleSubCommentCount = articleMapper.getArticleSubCommentCount(getArticleSubCommentListParams.getCommentId());
+        return new PaginationData<>(articleSubCommentList, articleSubCommentCount);
     }
 }

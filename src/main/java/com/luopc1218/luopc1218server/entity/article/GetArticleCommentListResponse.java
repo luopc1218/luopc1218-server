@@ -10,4 +10,5 @@ import lombok.ToString;
 public class GetArticleCommentListResponse extends ArticleComment {
     private String authorName;
     private String authorAvatarUrl;
+    private Integer subCommentCount;
 }
