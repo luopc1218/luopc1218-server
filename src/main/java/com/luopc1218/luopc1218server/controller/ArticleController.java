@@ -135,7 +135,6 @@ public class ArticleController {
         }
     }
 
-    @JsonWebTokenRequire
     @RequestMapping(value = "/getHotArticleList", method = RequestMethod.GET)
     public ApiResponse getHotArticleList() {
         try {
