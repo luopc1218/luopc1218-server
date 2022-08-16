@@ -7,4 +7,6 @@ public class AddArticleCommentBody {
     private Integer authorId;
     private Integer articleId;
     private String content;
+    private Integer commentId;
+    private Integer subCommentId;
 }

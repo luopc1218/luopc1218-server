@@ -2,12 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.luopc1218.luopc1218server.repository.SystemMapper">
-    <select id="getSiteLinkList" resultType="com.luopc1218.luopc1218server.entity.SiteLink">
-        SELECT id, label, url
-        FROM siteLink;
-    </select>
     <select id="getCountryTelCodeList" resultType="com.luopc1218.luopc1218server.entity.CountryTelCode">
         SELECT id, short as _short, name, en, tel, pinyin
         from country_tel_code;
+    </select>
+    <select id="getNotice" resultType="com.luopc1218.luopc1218server.entity.GetNoticeResponse">
+        select n.id, content, authorId, u.name as authorName, u.avatarUrl as authorAvatarUrl, n.createTime
+        from notice n
+                 left join user u on u.id = n.authorId
+        order by createTime desc
+        limit 1;
     </select>
 </mapper>

@@ -154,4 +154,8 @@ public class ArticleService {
         Integer articleSubCommentCount = articleMapper.getArticleSubCommentCount(getArticleSubCommentListParams.getCommentId());
         return new PaginationData<>(articleSubCommentList, articleSubCommentCount);
     }
+
+    public List<GetArticleListResponse> getHotArticleList() {
+        return articleMapper.getHotArticleList();
+    }
 }

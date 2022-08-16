@@ -135,6 +135,16 @@ public class ArticleController {
         }
     }
 
+    @JsonWebTokenRequire
+    @RequestMapping(value = "/getHotArticleList", method = RequestMethod.GET)
+    public ApiResponse getHotArticleList() {
+        try {
+            return ApiResponse.success(articleService.getHotArticleList());
+        } catch (Exception e) {
+            return ApiResponse.fail(e.getMessage());
+        }
+    }
+
     @RequestMapping(value = "/getArticleCommentList", method = RequestMethod.GET)
     public ApiResponse getArticleCommentList(@Param("page") Integer page, @Param("pageSize") Integer pageSize, @Param("articleId") Integer articleId) {
         try {

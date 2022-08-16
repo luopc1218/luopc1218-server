@@ -60,4 +60,6 @@ public interface ArticleMapper {
     List<ArticleComment> getArticleSubCommentList(@Param("getArticleSubCommentListParams") GetArticleSubCommentListParams getArticleSubCommentListParams);
 
     Integer getArticleSubCommentCount(Integer commentId);
+
+    List<GetArticleListResponse> getHotArticleList();
 }

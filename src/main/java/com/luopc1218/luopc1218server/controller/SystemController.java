@@ -14,15 +14,6 @@ public class SystemController {
     @Autowired
     SystemService systemService;
 
-    @RequestMapping(value = "/getNavLink", method = RequestMethod.GET)
-    public ApiResponse getNavLink() {
-        try {
-            return ApiResponse.success(systemService.getSiteLinkList());
-        } catch (Exception e) {
-            return ApiResponse.fail(e.getMessage());
-        }
-    }
-
     @RequestMapping(value = "/getCountryTelCodeList", method = RequestMethod.GET)
     public ApiResponse getPhoneCodeList() {
         try {
@@ -35,5 +26,15 @@ public class SystemController {
     @RequestMapping(value = "/sendPhoneCheckCode", method = RequestMethod.POST)
     public ApiResponse sendPhoneCheckCode() {
         return ApiResponse.fail(ApiResponseStatus.DEVELOPING);
+    }
+
+    @RequestMapping(value = "/getNotice", method = RequestMethod.GET)
+    public ApiResponse getNotice() {
+
+        try {
+            return ApiResponse.success(systemService.getNotice());
+        } catch (Exception e) {
+            return ApiResponse.fail(e.getMessage());
+        }
     }
 }
