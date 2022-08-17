@@ -1,9 +1,13 @@
 package com.luopc1218.luopc1218server.controller;
 
+import com.luopc1218.luopc1218server.entity.ChangeNoticeBody;
 import com.luopc1218.luopc1218server.entity.request.ApiResponse;
 import com.luopc1218.luopc1218server.entity.request.ApiResponseStatus;
 import com.luopc1218.luopc1218server.service.SystemService;
+import com.luopc1218.luopc1218server.util.annotation.JsonWebTokenRequire;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,6 +37,19 @@ public class SystemController {
 
         try {
             return ApiResponse.success(systemService.getNotice());
+        } catch (Exception e) {
+            return ApiResponse.fail(e.getMessage());
+        }
+    }
+
+    @JsonWebTokenRequire
+    @RequestMapping(value = "/changeNotice", method = RequestMethod.POST)
+    public ApiResponse changeNotice(HttpServletRequest request, @RequestBody ChangeNoticeBody changeNoticeBody) {
+        try {
+            Integer userId = (Integer) request.getAttribute("CURRENT_USER_ID");
+            changeNoticeBody.setAuthorId(userId);
+            systemService.changeNotice(changeNoticeBody);
+            return ApiResponse.success();
         } catch (Exception e) {
             return ApiResponse.fail(e.getMessage());
         }

@@ -2,6 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.luopc1218.luopc1218server.repository.SystemMapper">
+    <insert id="changeNotice">
+        insert into notice(content, authorId)
+        VALUES (#{changeNoticeBody.content}, #{changeNoticeBody.authorId});
+    </insert>
     <select id="getCountryTelCodeList" resultType="com.luopc1218.luopc1218server.entity.CountryTelCode">
         SELECT id, short as _short, name, en, tel, pinyin
         from country_tel_code;
