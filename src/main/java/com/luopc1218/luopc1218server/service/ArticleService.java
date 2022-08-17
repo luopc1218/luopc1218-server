@@ -56,7 +56,7 @@ public class ArticleService {
 
     public PaginationData<GetArticleListResponse> getArticleList(GetArticleListParams getArticleListParams) throws RuntimeException {
         List<GetArticleListResponse> articleList = articleMapper.getArticleList(getArticleListParams);
-        Integer articleListTotalCount = articleMapper.getArticleListTotalCount();
+        Integer articleListTotalCount = articleMapper.getArticleListCount();
         return new PaginationData<>(articleList, articleListTotalCount);
     }
 
@@ -149,13 +149,14 @@ public class ArticleService {
         return new PaginationData<>(articleCommentList, articleCommentCount);
     }
 
-    public PaginationData<ArticleComment> getArticleSubCommentList(GetArticleSubCommentListParams getArticleSubCommentListParams) {
+    public PaginationData<ArticleComment> getArticleSubCommentList(GetArticleSubCommentListParams getArticleSubCommentListParams) throws RuntimeException {
         List<ArticleComment> articleSubCommentList = articleMapper.getArticleSubCommentList(getArticleSubCommentListParams);
         Integer articleSubCommentCount = articleMapper.getArticleSubCommentCount(getArticleSubCommentListParams.getCommentId());
         return new PaginationData<>(articleSubCommentList, articleSubCommentCount);
     }
 
-    public List<GetArticleListResponse> getHotArticleList() {
+    public List<GetArticleListResponse> getHotArticleList() throws RuntimeException {
         return articleMapper.getHotArticleList();
     }
+
 }

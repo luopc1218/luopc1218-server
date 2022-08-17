@@ -138,10 +138,13 @@
         set viewCount = viewCount + 1
         where id = #{addArticleViewCountBody.articleId}
     </update>
-    <select id="getArticleListTotalCount" resultType="integer">
+    <select id="getArticleListCount" resultType="integer">
         select COUNT(*) as count
         from article
         where deleteTime is null
+        <if test="authorId != null">
+            and authorId = #{authorId}
+        </if>
         ;
     </select>
     <select id="getArticleFavoriteCount" resultType="integer">

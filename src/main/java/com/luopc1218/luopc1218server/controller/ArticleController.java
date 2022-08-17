@@ -5,7 +5,6 @@ import com.luopc1218.luopc1218server.entity.request.ApiResponse;
 import com.luopc1218.luopc1218server.service.ArticleService;
 import com.luopc1218.luopc1218server.util.annotation.JsonWebTokenRequire;
 import jakarta.servlet.http.HttpServletRequest;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -145,7 +144,7 @@ public class ArticleController {
     }
 
     @RequestMapping(value = "/getArticleCommentList", method = RequestMethod.GET)
-    public ApiResponse getArticleCommentList(@Param("page") Integer page, @Param("pageSize") Integer pageSize, @Param("articleId") Integer articleId) {
+    public ApiResponse getArticleCommentList(@RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("articleId") Integer articleId) {
         try {
             GetArticleCommentListParams getArticleCommentListParams = new GetArticleCommentListParams(page, pageSize);
             getArticleCommentListParams.setArticleId(articleId);
@@ -156,10 +155,22 @@ public class ArticleController {
     }
 
     @RequestMapping(value = "/getArticleSubCommentList", method = RequestMethod.GET)
-    public ApiResponse getArticleSubCommentList(@Param("page") Integer page, @Param("pageSize") Integer pageSize, @Param("commentId") Integer commentId) {
+    public ApiResponse getArticleSubCommentList(@RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, @RequestParam("commentId") Integer commentId) {
         try {
             GetArticleSubCommentListParams getArticleSubCommentListParams = new GetArticleSubCommentListParams(page, pageSize, commentId);
             return ApiResponse.success(articleService.getArticleSubCommentList(getArticleSubCommentListParams));
+        } catch (Exception e) {
+            return ApiResponse.fail(e.getMessage());
+        }
+    }
+
+    @JsonWebTokenRequire
+    @RequestMapping(value = "/getUserArticleList", method = RequestMethod.GET)
+    public ApiResponse getUserArticleList(@RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, HttpServletRequest request) {
+        try {
+            GetArticleListParams getArticleListParams = new GetArticleListParams(page, pageSize);
+            getArticleListParams.setAuthorId((Integer) request.getAttribute("CURRENT_USER_ID"));
+            return ApiResponse.success(articleService.getArticleList(getArticleListParams));
         } catch (Exception e) {
             return ApiResponse.fail(e.getMessage());
         }

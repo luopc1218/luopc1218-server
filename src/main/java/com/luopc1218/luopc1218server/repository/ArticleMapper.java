@@ -20,7 +20,9 @@ public interface ArticleMapper {
 
     List<GetArticleListResponse> getArticleList(@Param("getArticleListParams") GetArticleListParams getArticleListParams);
 
-    Integer getArticleListTotalCount();
+    Integer getArticleListCount(Integer authorId);
+
+    Integer getArticleListCount();
 
     GetArticleInfoResponse getArticleInfo(@Param("getArticleInfoParams") GetArticleInfoParams getArticleInfoParams);
 
@@ -62,4 +64,5 @@ public interface ArticleMapper {
     Integer getArticleSubCommentCount(Integer commentId);
 
     List<GetArticleListResponse> getHotArticleList();
+
 }

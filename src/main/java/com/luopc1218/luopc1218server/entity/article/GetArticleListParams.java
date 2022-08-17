@@ -9,6 +9,9 @@ import lombok.ToString;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 public class GetArticleListParams extends Pagination {
+    private Integer authorId;
+
+
     public GetArticleListParams() {
     }
 
