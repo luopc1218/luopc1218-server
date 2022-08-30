@@ -127,6 +127,9 @@
         from article a
         left join user u on a.authorId = u.id
         where deleteTime is null
+        <if test="getArticleListParams.authorId != null">
+            and authorId=#{getArticleListParams.authorId}
+        </if>
         order by a.updateTime desc, a.createTime desc
         <if test="getArticleListParams.limit != null">
             limit #{getArticleListParams.limit},#{getArticleListParams.pageSize}
@@ -214,14 +217,16 @@
         VALUES (#{articleId}, #{userId});
     </insert>
     <insert id="addArticleComment">
-        insert into article_comment(articleId, authorId, content, commentId, subCommentId)
+        insert into article_comment(articleId, authorId, content, replyContent, commentId, subCommentId)
         values (#{addArticleCommentBody.articleId}, #{addArticleCommentBody.authorId}, #{addArticleCommentBody.content},
+                #{addArticleCommentBody.replyContent},
                 #{addArticleCommentBody.commentId}, #{addArticleCommentBody.subCommentId})
     </insert>
     <select id="getArticleCommentList"
             resultMap="getArticleCommentListResponseMap">
         select
-        ac.id, ac.articleId, ac.authorId, u.name as authorName, u.avatarUrl as authorAvatarUrl,ac.content,
+        ac.id, ac.articleId, ac.authorId, u.name as authorName, u.avatarUrl as
+        authorAvatarUrl,ac.content,ac.replyContent,
         ac.commentId,ac.subCommentId,
         ac.createTime
         from article_comment ac
@@ -241,7 +246,8 @@
     <select id="getArticleSubCommentList"
             resultMap="getArticleSubCommentListResponseMap">
         select
-        ac.id, ac.articleId, ac.authorId, u.name as authorName, u.avatarUrl as authorAvatarUrl,ac.content,
+        ac.id, ac.articleId, ac.authorId, u.name as authorName, u.avatarUrl as
+        authorAvatarUrl,ac.content,ac.replyContent,
         ac.commentId,
         ac.subCommentId,
         ac.createTime

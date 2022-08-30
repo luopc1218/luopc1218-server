@@ -22,8 +22,6 @@ public interface ArticleMapper {
 
     Integer getArticleListCount(Integer authorId);
 
-    Integer getArticleListCount();
-
     GetArticleInfoResponse getArticleInfo(@Param("getArticleInfoParams") GetArticleInfoParams getArticleInfoParams);
 
     void saveArticle(@Param("saveArticleBody") SaveArticleBody saveArticleBody);

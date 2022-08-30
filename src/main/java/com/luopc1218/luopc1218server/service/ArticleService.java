@@ -56,7 +56,7 @@ public class ArticleService {
 
     public PaginationData<GetArticleListResponse> getArticleList(GetArticleListParams getArticleListParams) throws RuntimeException {
         List<GetArticleListResponse> articleList = articleMapper.getArticleList(getArticleListParams);
-        Integer articleListTotalCount = articleMapper.getArticleListCount();
+        Integer articleListTotalCount = articleMapper.getArticleListCount(getArticleListParams.getAuthorId());
         return new PaginationData<>(articleList, articleListTotalCount);
     }
 
