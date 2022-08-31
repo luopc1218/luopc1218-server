@@ -9,7 +9,6 @@ public class ArticleComment {
     private Integer articleId;
     private Integer authorId;
     private String content;
-    private String replyContent;
     private Integer commentId;
     private Integer subCommentId;
     private java.sql.Timestamp createTime;

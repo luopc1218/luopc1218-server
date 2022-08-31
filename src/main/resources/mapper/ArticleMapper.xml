@@ -217,16 +217,16 @@
         VALUES (#{articleId}, #{userId});
     </insert>
     <insert id="addArticleComment">
-        insert into article_comment(articleId, authorId, content, replyContent, commentId, subCommentId)
+        insert into article_comment(articleId, authorId, content, commentId, subCommentId)
         values (#{addArticleCommentBody.articleId}, #{addArticleCommentBody.authorId}, #{addArticleCommentBody.content},
-                #{addArticleCommentBody.replyContent},
                 #{addArticleCommentBody.commentId}, #{addArticleCommentBody.subCommentId})
     </insert>
+
     <select id="getArticleCommentList"
             resultMap="getArticleCommentListResponseMap">
         select
         ac.id, ac.articleId, ac.authorId, u.name as authorName, u.avatarUrl as
-        authorAvatarUrl,ac.content,ac.replyContent,
+        authorAvatarUrl,ac.content,
         ac.commentId,ac.subCommentId,
         ac.createTime
         from article_comment ac
@@ -247,7 +247,7 @@
             resultMap="getArticleSubCommentListResponseMap">
         select
         ac.id, ac.articleId, ac.authorId, u.name as authorName, u.avatarUrl as
-        authorAvatarUrl,ac.content,ac.replyContent,
+        authorAvatarUrl,ac.content,
         ac.commentId,
         ac.subCommentId,
         ac.createTime
