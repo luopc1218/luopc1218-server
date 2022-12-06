@@ -159,4 +159,9 @@ public class ArticleService {
         return articleMapper.getHotArticleList();
     }
 
+    public PaginationData<GetArticleListResponse> getArticleFavoriteList(GetArticleFavoriteListParams getArticleFavoriteListParams) {
+        List<GetArticleListResponse> articleList = articleMapper.getArticleFavoriteList(getArticleFavoriteListParams);
+        Integer articleCount = articleMapper.getArticleFavoriteListCount(getArticleFavoriteListParams);
+        return new PaginationData<>(articleList, articleCount);
+    }
 }

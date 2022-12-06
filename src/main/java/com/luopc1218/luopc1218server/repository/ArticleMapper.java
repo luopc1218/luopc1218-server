@@ -63,4 +63,7 @@ public interface ArticleMapper {
 
     List<GetArticleListResponse> getHotArticleList();
 
+    List<GetArticleListResponse> getArticleFavoriteList(@Param("getArticleFavoriteListParams") GetArticleFavoriteListParams getArticleFavoriteListParams);
+
+    Integer getArticleFavoriteListCount(@Param("getArticleFavoriteListParams") GetArticleFavoriteListParams getArticleFavoriteListParams);
 }

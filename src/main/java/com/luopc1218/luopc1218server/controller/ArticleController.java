@@ -175,4 +175,16 @@ public class ArticleController {
             return ApiResponse.fail(e.getMessage());
         }
     }
+
+    @JsonWebTokenRequire
+    @RequestMapping(value = "/getArticleFavoriteList", method = RequestMethod.GET)
+    public ApiResponse getArticleFavoriteList(@RequestParam("page") Integer page, @RequestParam("pageSize") Integer pageSize, HttpServletRequest request) {
+        try {
+            GetArticleFavoriteListParams getArticleFavoriteListParams = new GetArticleFavoriteListParams(page, pageSize);
+            getArticleFavoriteListParams.setUserId((Integer) request.getAttribute("CURRENT_USER_ID"));
+            return ApiResponse.success(articleService.getArticleFavoriteList(getArticleFavoriteListParams));
+        } catch (Exception e) {
+            return ApiResponse.fail(e.getMessage());
+        }
+    }
 }

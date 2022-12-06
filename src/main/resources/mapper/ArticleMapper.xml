@@ -21,6 +21,23 @@
                     select="getArticleTagLinkList">
         </collection>
     </resultMap>
+    <resultMap id="getArticleListResponseMap"
+               type="com.luopc1218.luopc1218server.entity.article.GetArticleListResponse">
+        <result column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="description" property="description"/>
+        <result column="authorId" property="authorId"/>
+        <result column="authorName" property="authorName"/>
+        <result column="authorAvatarUrl" property="authorAvatarUrl"/>
+        <result column="viewCount" property="viewCount"/>
+        <result column="createTime" property="createTime"/>
+        <result column="updateTime" property="updateTime"/>
+        <result column="deleteTime" property="deleteTime"/>
+        <collection property="tags" javaType="java.util.List"
+                    ofType="com.luopc1218.luopc1218server.entity.article.ArticleTag" column="{articleId=id}"
+                    select="getArticleTagLinkList">
+        </collection>
+    </resultMap>
 
     <resultMap id="getArticleCommentListResponseMap"
                type="com.luopc1218.luopc1218server.entity.article.GetArticleCommentListResponse">
@@ -112,11 +129,10 @@
         where a.id = #{getArticleInfoParams.id}
           and deleteTime is null;
     </select>
-    <select id="getArticleList" resultMap="getArticleInfoResponseMap">
+    <select id="getArticleList" resultMap="getArticleListResponseMap">
         select a.id,
         title,
         description,
-        content,
         authorId,
         u.name as authorName,
         u.avatarUrl as authorAvatarUrl,
@@ -280,11 +296,10 @@
                  left join user u on ac.authorId = u.id
         where ac.id = #{commentId}
     </select>
-    <select id="getHotArticleList" resultMap="getArticleInfoResponseMap">
+    <select id="getHotArticleList" resultMap="getArticleListResponseMap">
         select a.id,
                title,
                description,
-               content,
                authorId,
                u.name      as authorName,
                u.avatarUrl as authorAvatarUrl,
@@ -297,6 +312,37 @@
         where deleteTime is null
         order by viewCount desc
         limit 10;
+    </select>
+    <select id="getArticleFavoriteList"
+            resultMap="getArticleListResponseMap">
+        select a.id,
+        a.title,
+        a.description,
+        a.authorId,
+        u.name as authorName,
+        u.avatarUrl as authorAvatarUrl,
+        a.viewCount,
+        a.createTime,
+        updateTime,
+        deleteTime
+        from article_favorite af
+        left join article a on af.articleId = a.id
+        left join user u on a.authorId = u.id
+        where a.deleteTime is null
+        and af.userId = #{getArticleFavoriteListParams.userId}
+        order by a.updateTime desc, a.createTime desc
+        <if test="getArticleFavoriteListParams.limit != null">
+            limit #{getArticleFavoriteListParams.limit},#{getArticleFavoriteListParams.pageSize}
+        </if>
+        ;
+    </select>
+    <select id="getArticleFavoriteListCount" resultType="java.lang.Integer">
+        select Count(*) as count
+        from article_favorite af
+        left join article a on af.articleId = a.id
+        where a.deleteTime is null
+        and af.userId = #{getArticleFavoriteListParams.userId}
+        order by a.updateTime desc, a.createTime desc
     </select>
 
 </mapper>
