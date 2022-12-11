@@ -148,20 +148,6 @@
     </build>
     <repositories>
         <repository>
-            <id>central</id>
-            <name>aliyun maven</name>
-            <url>https://maven.aliyun.com/repository/central</url>
-            <layout>default</layout>
-            <!-- 是否开启发布版构件下载 -->
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <!-- 是否开启快照版构件下载 -->
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
             <id>spring-milestones</id>
             <name>Spring Milestones</name>
             <url>https://repo.spring.io/milestone</url>
