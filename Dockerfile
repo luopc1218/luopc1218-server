@@ -1,10 +1,7 @@
-FROM openjdk:17.0.2
-
-# 添加参数
-ARG JAR_FILE
+FROM openjdk:11.0.17
 
 # 添加 Spring Boot 包
-ADD target/${JAR_FILE} app.jar
+ADD target/luopc1218-server-0.0.1-SNAPSHOT.jar /luopc1218-server-0.0.1-SNAPSHOT.jar
 
 # 执行启动命令
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+ENTRYPOINT ["sh","-c","java -jar  /luopc1218-server-0.0.1-SNAPSHOT.jar"]
