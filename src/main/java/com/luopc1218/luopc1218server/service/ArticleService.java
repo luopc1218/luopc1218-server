@@ -97,42 +97,37 @@ public class ArticleService {
         Integer articleId = toggleArticleEvaluateBody.getArticleId();
         Integer userId = toggleArticleEvaluateBody.getUserId();
         String evaluateType = toggleArticleEvaluateBody.getEvaluateType();
-        switch (evaluateType) {
-            case "favorite" -> {
-                if (articleMapper.getArticleFavorite(articleId, userId) != null) {
-                    articleMapper.deleteArticleFavorite(articleId, userId);
-                } else {
-                    articleMapper.addArticleFavorite(articleId, userId);
-                }
+        if (evaluateType == "favorite") {
+            if (articleMapper.getArticleFavorite(articleId, userId) != null) {
+                articleMapper.deleteArticleFavorite(articleId, userId);
+            } else {
+                articleMapper.addArticleFavorite(articleId, userId);
             }
-            case "good" -> {
-                ArticleEvaluate articleEvaluate = articleMapper.getArticleEvaluate(articleId, userId);
-                if (articleEvaluate != null) {
-                    Integer articleEvaluateId = articleEvaluate.getId();
-                    if (articleEvaluate.getEvaluate() == 1) {
-                        articleMapper.deleteArticleEvaluate(articleEvaluateId);
-                    } else {
-                        articleMapper.changeArticleEvaluate(articleEvaluateId, 1);
-                    }
+        } else if (evaluateType == "goode") {
+            ArticleEvaluate articleEvaluate = articleMapper.getArticleEvaluate(articleId, userId);
+            if (articleEvaluate != null) {
+                Integer articleEvaluateId = articleEvaluate.getId();
+                if (articleEvaluate.getEvaluate() == 1) {
+                    articleMapper.deleteArticleEvaluate(articleEvaluateId);
                 } else {
-                    articleMapper.addArticleEvaluate(articleId, userId, 1);
+                    articleMapper.changeArticleEvaluate(articleEvaluateId, 1);
                 }
+            } else {
+                articleMapper.addArticleEvaluate(articleId, userId, 1);
             }
-            case "bad" -> {
-                ArticleEvaluate articleEvaluate = articleMapper.getArticleEvaluate(articleId, userId);
-                if (articleEvaluate != null) {
-                    Integer articleEvaluateId = articleEvaluate.getId();
-                    if (articleEvaluate.getEvaluate() == 0) {
-                        articleMapper.deleteArticleEvaluate(articleEvaluateId);
-                    } else {
-                        articleMapper.changeArticleEvaluate(articleEvaluateId, 0);
-                    }
+        } else if (evaluateType == "bad") {
+            ArticleEvaluate articleEvaluate = articleMapper.getArticleEvaluate(articleId, userId);
+            if (articleEvaluate != null) {
+                Integer articleEvaluateId = articleEvaluate.getId();
+                if (articleEvaluate.getEvaluate() == 0) {
+                    articleMapper.deleteArticleEvaluate(articleEvaluateId);
                 } else {
-                    articleMapper.addArticleEvaluate(articleId, userId, 0);
+                    articleMapper.changeArticleEvaluate(articleEvaluateId, 0);
                 }
+            } else {
+                articleMapper.addArticleEvaluate(articleId, userId, 0);
             }
         }
-
     }
 
     public void addArticleViewCount(AddArticleViewCountBody addArticleViewCountBody) throws RuntimeException {

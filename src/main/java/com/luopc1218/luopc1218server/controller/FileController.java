@@ -2,7 +2,7 @@ package com.luopc1218.luopc1218server.controller;
 
 import com.luopc1218.luopc1218server.entity.request.ApiResponse;
 import com.luopc1218.luopc1218server.service.FileService;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

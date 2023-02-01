@@ -4,7 +4,7 @@ import com.luopc1218.luopc1218server.entity.article.*;
 import com.luopc1218.luopc1218server.entity.request.ApiResponse;
 import com.luopc1218.luopc1218server.service.ArticleService;
 import com.luopc1218.luopc1218server.util.annotation.JsonWebTokenRequire;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

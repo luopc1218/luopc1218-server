@@ -4,7 +4,7 @@ import com.luopc1218.luopc1218server.entity.message.AddLeaveMessageBody;
 import com.luopc1218.luopc1218server.entity.message.GetLeaveMessageListParams;
 import com.luopc1218.luopc1218server.entity.request.ApiResponse;
 import com.luopc1218.luopc1218server.service.MessageService;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
