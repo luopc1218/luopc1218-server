@@ -7,7 +7,7 @@ mybatis:
 spring:
   datasource:
     password: GUjPhs5mwFJy4AhWRc2F
-    url: jdbc:mysql://myserver.com:3306/luopc1218_develop
+    url: jdbc:mysql://myserver.com:3306/luopc1218
     username: root
 logging:
   level:
