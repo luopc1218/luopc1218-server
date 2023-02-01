@@ -1,13 +1,13 @@
 minio:
   accessKey: minio
-  endpoint: http://106.52.172.134:9000
+  endpoint: http://myserver.com:9000
   secretKey: minio@123
 mybatis:
   mapper-locations: classpath:mapper/*Mapper.xml
 spring:
   datasource:
-    password: root
-    url: jdbc:mysql://106.52.172.134:3306/luopc1218_develop
+    password: GUjPhs5mwFJy4AhWRc2F
+    url: jdbc:mysql://myserver.com:3306/luopc1218_develop
     username: root
 logging:
   level:
