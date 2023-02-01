@@ -18,7 +18,7 @@ public class FileController {
     FileService fileService;
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public ApiResponse upload(HttpServletRequest request, @RequestParam("file") MultipartFile file) {
+    public ApiResponse upload(@RequestParam("file") MultipartFile file) {
         try {
             String fileUrl = fileService.upload(file);
             return ApiResponse.success(fileUrl, "上传成功");

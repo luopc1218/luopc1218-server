@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ArticleService {
@@ -97,13 +98,13 @@ public class ArticleService {
         Integer articleId = toggleArticleEvaluateBody.getArticleId();
         Integer userId = toggleArticleEvaluateBody.getUserId();
         String evaluateType = toggleArticleEvaluateBody.getEvaluateType();
-        if (evaluateType == "favorite") {
+        if (Objects.equals(evaluateType, "favorite")) {
             if (articleMapper.getArticleFavorite(articleId, userId) != null) {
                 articleMapper.deleteArticleFavorite(articleId, userId);
             } else {
                 articleMapper.addArticleFavorite(articleId, userId);
             }
-        } else if (evaluateType == "goode") {
+        } else if (Objects.equals(evaluateType, "goode")) {
             ArticleEvaluate articleEvaluate = articleMapper.getArticleEvaluate(articleId, userId);
             if (articleEvaluate != null) {
                 Integer articleEvaluateId = articleEvaluate.getId();
@@ -115,7 +116,7 @@ public class ArticleService {
             } else {
                 articleMapper.addArticleEvaluate(articleId, userId, 1);
             }
-        } else if (evaluateType == "bad") {
+        } else if (Objects.equals(evaluateType, "bad")) {
             ArticleEvaluate articleEvaluate = articleMapper.getArticleEvaluate(articleId, userId);
             if (articleEvaluate != null) {
                 Integer articleEvaluateId = articleEvaluate.getId();
