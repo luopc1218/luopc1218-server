@@ -1,1 +1,1 @@
-docker build -t luopc1218-server .
+mvn clean package && docker build -t luopc1218-server .
