@@ -23,7 +23,7 @@ public class Minio {
             PutObjectArgs objectArgs = PutObjectArgs.builder().bucket(bucketName).object(originalFileName).contentType(file.getContentType()).stream(file.getInputStream(), file.getSize(), -1).build();
             minioClient.putObject(objectArgs);
             String previewUrl = minioClient.getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder().method(Method.GET).bucket(bucketName).object(originalFileName).build());
-            System.out.println(previewUrl);
+//            System.out.println(previewUrl);
             return endpoint + '/' + bucketName + "/" + originalFileName;
         } catch (Exception e) {
             throw new RuntimeException(e);
