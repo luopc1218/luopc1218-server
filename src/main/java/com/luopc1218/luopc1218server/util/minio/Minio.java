@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Component
 public class Minio {
-    static String bucketName = "luopc1218server";
+    static String bucketName = "luopc1218";
 
     @Value("${minio.endpoint}")
     private String endpoint;
@@ -22,7 +22,6 @@ public class Minio {
             String originalFileName = file.getOriginalFilename();
             PutObjectArgs objectArgs = PutObjectArgs.builder().bucket(bucketName).object(originalFileName).contentType(file.getContentType()).stream(file.getInputStream(), file.getSize(), -1).build();
             minioClient.putObject(objectArgs);
-            GetObjectResponse getObjectResponse = minioClient.getObject(GetObjectArgs.builder().bucket(bucketName).object(originalFileName).build());
             String previewUrl = minioClient.getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder().method(Method.GET).bucket(bucketName).object(originalFileName).build());
             System.out.println(previewUrl);
             return endpoint + '/' + bucketName + "/" + originalFileName;

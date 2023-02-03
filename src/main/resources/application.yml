@@ -1,6 +1,6 @@
 minio:
   accessKey: admin
-  endpoint: http://myserver.com:9000
+  endpoint: http://myserver.com:9090
   secretKey: admin@123
 mybatis:
   mapper-locations: classpath:mapper/*Mapper.xml
