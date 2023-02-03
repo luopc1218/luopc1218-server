@@ -1,7 +1,7 @@
 minio:
-  accessKey: minio
+  accessKey: admin
   endpoint: http://myserver.com:9000
-  secretKey: minio@123
+  secretKey: admin@123
 mybatis:
   mapper-locations: classpath:mapper/*Mapper.xml
 spring:
