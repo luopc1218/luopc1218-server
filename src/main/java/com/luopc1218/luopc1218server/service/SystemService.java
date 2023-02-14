@@ -1,7 +1,10 @@
 package com.luopc1218.luopc1218server.service;
 
 import com.luopc1218.luopc1218server.entity.*;
-import com.luopc1218.luopc1218server.entity.request.ApiResponse;
+import com.luopc1218.luopc1218server.entity.indexData.About;
+import com.luopc1218.luopc1218server.entity.indexData.GetIndexDataResponse;
+import com.luopc1218.luopc1218server.entity.indexData.IndexData;
+import com.luopc1218.luopc1218server.entity.indexData.Path;
 import com.luopc1218.luopc1218server.repository.SystemMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,5 +28,12 @@ public class SystemService {
 
     public void changeNotice(ChangeNoticeBody changeNoticeBody) {
         systemMapper.changeNotice(changeNoticeBody);
+    }
+
+    public GetIndexDataResponse getIndexData() {
+        IndexData indexData = systemMapper.getIndexData();
+        List<Path> paths = systemMapper.getIndexDataPaths();
+        List<About> abouts = systemMapper.getIndexDataAbouts();
+        return new GetIndexDataResponse(indexData, paths, abouts);
     }
 }

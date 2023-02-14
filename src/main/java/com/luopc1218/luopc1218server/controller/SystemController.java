@@ -54,4 +54,13 @@ public class SystemController {
             return ApiResponse.fail(e.getMessage());
         }
     }
+
+    @RequestMapping(value = "/getIndexData",method = RequestMethod.GET)
+    public  ApiResponse getIndexData(){
+        try {
+            return ApiResponse.success(systemService.getIndexData());
+        }catch (Exception e){
+            return ApiResponse.fail(e.getMessage());
+        }
+    }
 }
