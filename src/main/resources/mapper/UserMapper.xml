@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.luopc1218.luopc1218server.repository.UserMapper">
     <insert id="addUser" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
-        insert into user(name, avatarUrl) value (#{user.name}, #{user.avatarUrl});
+        insert into user(name, avatarUrl,groupId) value (#{user.name}, #{user.avatarUrl},2);
     </insert>
     <insert id="addUserPassword" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
         insert into user_password(userId, password) value (#{userPassword.userId}, #{userPassword.password});
@@ -41,20 +41,14 @@
         INSERT INTO user_email(userId, address)
         values (#{userEmail.userId}, #{userEmail.address})
     </insert>
-    <select id="getUserInfoById" resultType="com.luopc1218.luopc1218server.entity.user.GetUserInfoResponse">
-        select u.id, u.name, avatarUrl, u.createTime, ctc.tel, up.number, ue.address
-        from user u
-                 left join user_phone up on up.userId = u.id
-                 left join user_email ue on ue.userId = u.id
-                 left join country_tel_code ctc on up.telCodeId = ctc.id
-        where u.id = #{id};
-    </select>
     <select id="getUserInfo" resultType="com.luopc1218.luopc1218server.entity.user.GetUserInfoResponse">
-        select u.id, u.name, avatarUrl, u.createTime, ctc.tel, up.number, ue.address
+        select u.id, u.name, avatarUrl, u.createTime, ctc.tel, up.number, ue.address,ug.groupName,ug.groupType
         from user u
         left join user_phone up on up.userId = u.id
         left join user_email ue on ue.userId = u.id
         left join country_tel_code ctc on up.telCodeId = ctc.id
+        left join user_group ug on ug.id = u.groupId
+
         where true
         <if test="getUserInfoParams.id != null ">
             and u.id = #{getUserInfoParams.id};

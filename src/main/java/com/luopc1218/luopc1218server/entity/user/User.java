@@ -14,5 +14,6 @@ public class User {
     private String name;
     private String avatarUrl;
     private Date createTime;
+    private Integer groupId;
 }
 
