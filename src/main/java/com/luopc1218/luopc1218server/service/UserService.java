@@ -38,7 +38,7 @@ public class UserService {
         }
     }
 
-    public User signUp(SignUpBody signUpBody) throws RuntimeException {
+    public GetUserInfoResponse signUp(SignUpBody signUpBody) throws RuntimeException {
         String name = signUpBody.getUsername();
         if (userMapper.getUserByName(name) != null) {
             throw new RuntimeException("用户已存在");
@@ -59,7 +59,7 @@ public class UserService {
 //        绑定手机号
         if (!Objects.equals(phone, "") && telCodeId != null) {
             UserPhone userPhone = new UserPhone(userId, telCodeId, phone);
-            String phoneCheckCode = signUpBody.getPhoneCheckCode();
+//            String phoneCheckCode = signUpBody.getPhoneCheckCode();
             userMapper.addUserPhone(userPhone);
         }
 //        绑定邮箱
