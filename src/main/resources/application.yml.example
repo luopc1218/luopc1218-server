@@ -1,0 +1,11 @@
+minio:
+  accessKey: {{your_minio_access_key}}
+  endpoint: {{your_minio_ip}}:{{your_minio_port}}
+  secretKey: {{your_minio_secret_key}}Ï
+mybatis:
+  mapper-locations: classpath:mapper/*Mapper.xml
+spring:
+  datasource:
+    password: {{your_mysql_password}}
+    url: jdbc:mysql://{{your_mysql_ip}}:3306/luopc1218
+    username: {{your_mysql_username}}
